@@ -34,7 +34,8 @@ The initial prototype must focus on:
 3. a separate cannon entity placed on the foundation;
 4. placement validation between these components;
 5. basic recipe/prototype structure;
-6. save/load-safe runtime state if runtime state is required.
+6. save/load-safe runtime state if runtime state is required;
+7. a minimal Foundation-based ammunition production architecture test.
 
 Interplanetary targeting, projectile simulation, firing effects, charging mechanics, ammunition production, custom GUI, and advanced animation are outside the initial implementation scope unless explicitly requested.
 
@@ -98,10 +99,20 @@ For the prototype:
 * It must have its own item and recipe.
 * The Monolith Foundation must verify that its required footprint is covered by the correct tile.
 * Placement must fail cleanly if the required foundation tiles are missing.
+* The preferred validated implementation is a dedicated tile collision layer used by `tile_buildability_rules` on the Foundation prototype.
 
 The exact production cost is not final and may use temporary development values.
 
-## 4.3 Future Requirements
+## 4.3 Occupied Tile Removal
+
+While a Monolith Foundation exists, removing or replacing the required
+Foundation Tiles beneath it should not leave the installation in an invalid
+state.
+
+The prototype may restore mined Foundation Tiles after tile mining events when
+the engine does not provide a true pre-mine rejection point for tiles.
+
+## 4.4 Future Requirements
 
 Future versions may restrict placement based on:
 
@@ -166,7 +177,8 @@ The exact prototype type is not permanently fixed yet.
 
 The preferred architecture should support the foundation eventually acting as a specialized ammunition manufacturing machine.
 
-A `rocket-silo`-based implementation is currently a candidate because the final design requires:
+The current preferred prototype direction is an `assembling-machine`-based
+Foundation plus minimal runtime state, because the final design requires:
 
 * visible production progress;
 * resource consumption;
@@ -174,11 +186,13 @@ A `rocket-silo`-based implementation is currently a candidate because the final 
 * staged readiness;
 * a machine-like GUI.
 
-However:
+`rocket-silo` is no longer the first candidate for the Foundation architecture
+until a separate, isolated validation proves that its rocket-part and launch
+behavior can be reused without fighting hard-coded silo assumptions.
 
-> Do not commit the final architecture to `rocket-silo` until its suitability has been validated.
-
-If `rocket-silo` introduces undesirable hard-coded behavior or prevents required mechanics, an alternative architecture such as an assembling-machine-based entity plus runtime logic/custom GUI may be used.
+If the vanilla assembling-machine GUI is not sufficient for the final user
+experience, prefer adding a small custom GUI layer over adopting `rocket-silo`
+only for its progress presentation.
 
 The prototype test should help determine which architecture is appropriate.
 
@@ -298,13 +312,23 @@ The final design should preferably avoid ordinary inventory behavior where the p
 
 Possible implementations include:
 
-* internal silo-style production state;
 * hidden ammunition products;
 * runtime-maintained loaded-shot count.
 
 This decision is not final.
 
-For the initial prototype, do not implement the complete ammunition system unless explicitly requested.
+For the second-stage prototype, implement only a minimal test loop:
+
+* the Foundation has a dedicated recipe category;
+* a hidden test recipe produces `interplanetary-artillery-test-shell`;
+* the output item is converted into a `storage`-backed `loaded_shots` count;
+* `loaded_shots` is capped at 2;
+* production stops while the cap is reached;
+* `/monolith-consume-test-shot` consumes one loaded test shot and allows
+  production to resume.
+
+This is not the final ammunition system and must not add targeting, firing,
+charging, balancing, or final ammunition logistics.
 
 ---
 
@@ -564,11 +588,14 @@ Can Foundation ↔ Cannon relationships remain valid through:
 
 ### Test F — Future production architecture
 
-Determine whether a `rocket-silo`-derived Foundation is technically suitable for later ammunition production and visible production progress.
+Determine whether an `assembling-machine`-derived Foundation plus minimal
+runtime state is technically suitable for later ammunition production and
+visible production progress.
 
 Do not implement the full ammunition system merely to complete Test F.
 
-A minimal experimental implementation is acceptable if necessary to evaluate silo behavior.
+A minimal experimental implementation is acceptable if necessary to evaluate
+production behavior.
 
 ---
 

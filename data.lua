@@ -8,6 +8,8 @@ local tile_collision_masks = require("__base__.prototypes.tile.tile-collision-ma
 
 local foundation_tile_layer = "interplanetary_artillery_foundation_tile"
 local cannon_collision_layer = "interplanetary_artillery_cannon"
+local foundation_recipe_category = "interplanetary-artillery-foundation"
+local test_shell_name = "interplanetary-artillery-test-shell"
 
 data:extend({
   {
@@ -20,7 +22,7 @@ data:extend({
   },
   {
     type = "recipe-category",
-    name = "interplanetary-artillery-foundation",
+    name = foundation_recipe_category,
   },
 })
 
@@ -73,6 +75,36 @@ data:extend({
       condition = {layers = {water_tile = true}},
     },
     random_tint_color = {0.45, 0.52, 0.68, 1},
+  },
+  {
+    type = "recipe",
+    name = test_shell_name,
+    category = foundation_recipe_category,
+    enabled = true,
+    hidden = true,
+    hide_from_signal_gui = true,
+    allow_as_intermediate = false,
+    allow_decomposition = false,
+    energy_required = 15,
+    ingredients = {
+      {type = "item", name = "iron-plate", amount = 100},
+    },
+    results = {
+      {type = "item", name = test_shell_name, amount = 1},
+    },
+  },
+  {
+    type = "item",
+    name = test_shell_name,
+    icon = "__base__/graphics/icons/artillery-shell.png",
+    hidden = true,
+    subgroup = "ammo",
+    order = "z[interplanetary-artillery]-a[test-shell]",
+    inventory_move_sound = item_sounds.ammo_large_inventory_move,
+    pick_sound = item_sounds.ammo_large_inventory_pickup,
+    drop_sound = item_sounds.ammo_large_inventory_move,
+    stack_size = 1,
+    weight = 100 * kg,
   },
   {
     type = "recipe",
@@ -135,7 +167,7 @@ data:extend({
     },
     damaged_trigger_effect = hit_effects.entity(),
     impact_category = "metal-large",
-    crafting_categories = {"interplanetary-artillery-foundation"},
+    crafting_categories = {foundation_recipe_category},
     crafting_speed = 1,
     energy_source = {
       type = "electric",
