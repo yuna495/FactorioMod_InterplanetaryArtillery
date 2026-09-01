@@ -236,6 +236,11 @@ For the prototype, safe and deterministic cleanup is more important than final v
 
 No invisible or orphaned entities may remain after mining, destruction, script removal, or entity replacement.
 
+For the prototype, mining a Foundation that has an attached Cannon should also
+mine the Cannon and return its item to the mining player or robot where
+possible. Destructive removal such as damage death or script destruction may
+delete the attached Cannon instead of refunding it.
+
 ---
 
 # 7. Ammunition Concept
