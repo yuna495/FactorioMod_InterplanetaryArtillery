@@ -4,6 +4,7 @@ local FOUNDATION_TILE_NAME = "interplanetary-artillery-foundation-tile"
 local TEST_SHELL_NAME = "interplanetary-artillery-test-shell"
 local MAX_LOADED_SHOTS = 2
 local MONITOR_INTERVAL_TICKS = 60
+local firing = require("scripts.firing")
 
 local function ensure_storage()
   storage.foundations = storage.foundations or {}
@@ -12,6 +13,7 @@ local function ensure_storage()
   storage.active_foundations = storage.active_foundations or {}
   storage.protected_tiles = storage.protected_tiles or {}
   storage.player_foundation_targets = storage.player_foundation_targets or {}
+  firing.init()
 end
 
 local function position_key(surface_index, position)
@@ -635,3 +637,5 @@ register_event(defines.events.on_gui_opened, on_gui_opened)
 register_event(defines.events.on_selected_entity_changed, on_selected_entity_changed)
 register_event(defines.events.on_player_mined_tile, on_player_mined_tile)
 register_event(defines.events.on_robot_mined_tile, on_robot_mined_tile)
+
+firing.register(set_foundation_recipe)

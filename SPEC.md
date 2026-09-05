@@ -21,23 +21,28 @@ The weapon is not intended to be a direct replacement or simple upgrade for vani
 
 # 2. Current Development Stage
 
-The current goal is **prototype validation only**.
+The current goal is **Prototype Stage 3 - Firing Architecture Validation**.
 
 Do not implement the complete interplanetary artillery system yet.
 
-The first implementation should establish and validate the basic entity architecture required for the final design.
+Preserve the validated basic entity architecture required for the final design.
 
-The initial prototype must focus on:
+The established prototype consists of:
 
 1. dedicated foundation tiles;
 2. a large Monolith foundation entity;
 3. a separate cannon entity placed on the foundation;
 4. placement validation between these components;
 5. basic recipe/prototype structure;
-6. save/load-safe runtime state if runtime state is required;
-7. a minimal Foundation-based ammunition production architecture test.
+6. save/load-safe runtime state;
+7. Foundation-based ammunition production and a two-shot internal magazine.
 
-Interplanetary targeting, projectile simulation, firing effects, charging mechanics, ammunition production, custom GUI, and advanced animation are outside the initial implementation scope unless explicitly requested.
+Stages 1 and 2 have validated the 15x15 Foundation, dedicated tile requirement,
+separate Cannon, runtime attachment, assembling-machine production, hidden test
+shell, and persistent two-shot magazine with stop/resume behavior.
+Stage 3 adds manual same-surface targeting, one-shot consumption, persistent
+delayed impacts and temporary enemy-only area damage. Interplanetary fire,
+charging and advanced animation remain future scope.
 
 ---
 
@@ -177,7 +182,7 @@ The exact prototype type is not permanently fixed yet.
 
 The preferred architecture should support the foundation eventually acting as a specialized ammunition manufacturing machine.
 
-The current preferred prototype direction is an `assembling-machine`-based
+The current validated first-choice architecture is an `assembling-machine`-based
 Foundation plus minimal runtime state, because the final design requires:
 
 * visible production progress;
@@ -194,7 +199,7 @@ If the vanilla assembling-machine GUI is not sufficient for the final user
 experience, prefer adding a small custom GUI layer over adopting `rocket-silo`
 only for its progress presentation.
 
-The prototype test should help determine which architecture is appropriate.
+`rocket-silo` remains a possible future reference for isolated experiments only.
 
 ---
 
@@ -310,14 +315,15 @@ The player should eventually be able to see the progress of the next round being
 
 The final design should preferably avoid ordinary inventory behavior where the player can casually carry large numbers of completed interplanetary shells.
 
-Possible implementations include:
+The current validated architecture combines:
 
 * hidden ammunition products;
 * runtime-maintained loaded-shot count.
 
-This decision is not final.
+This is the current architecture; final ammunition ingredients and balance
+remain undecided.
 
-For the second-stage prototype, implement only a minimal test loop:
+The implemented Stage 2 test loop is retained:
 
 * the Foundation has a dedicated recipe category;
 * a hidden test recipe produces `interplanetary-artillery-test-shell`;
@@ -327,8 +333,8 @@ For the second-stage prototype, implement only a minimal test loop:
 * `/monolith-consume-test-shot` consumes one loaded test shot and allows
   production to resume.
 
-This is not the final ammunition system and must not add targeting, firing,
-charging, balancing, or final ammunition logistics.
+Stage 3 firing consumes the same loaded-shot count and resumes production.
+Charging, balancing and final ammunition logistics remain out of scope.
 
 ---
 
@@ -377,11 +383,49 @@ Expected characteristics:
 
 ## 9.2 Same-Surface Fire
 
-A future version should support extremely long-range bombardment on the same surface.
+Stage 3 supports manual long-range bombardment on the same surface.
 
 The expected range should greatly exceed vanilla artillery.
 
 Exact range is not yet specified.
+
+### Stage 3 Operation and Validation
+
+* Hover a Cannon and press Control + Shift + F to enter targeting mode.
+  The Cannon has higher selection priority than the Foundation at the mount.
+* A cursor-only selection tool selects a ground point (or the center of a
+  dragged rectangle). Each completed selection requests one shot.
+* The source Cannon unit number is stored per player. Selection never silently
+  substitutes another Cannon. Releasing the cursor tool exits targeting mode.
+* `/monolith-fire-test x y` targets coordinates using that explicitly selected
+  Cannon; `/monolith-shot-status` reports its identity and owned in-flight shots.
+* Validate live Cannon and Foundation, reciprocal attachment, matching position,
+  force and surface, player ownership, at least one loaded shot, and finite
+  target coordinates on the source surface before consuming ammunition.
+* No weapon range limit is imposed. The impact footprint must remain within
+  the engine's +/-1,000,000 tile bounds and configured finite map dimensions.
+* Generated but uncharted terrain is allowed. The tool does not reveal terrain;
+  coordinate commands support blind targeting independently of map UI limits.
+* All chunks touched by the radius-6 impact footprint must already be generated.
+  Ungenerated targets are rejected without ammunition loss. Stage 3 does not
+  request chunk generation, avoiding map-generation stalls and distant expansion.
+* On acceptance consume exactly one loaded shot, resume production, allocate
+  a monotonically increasing shot ID and schedule impact 300 ticks later.
+* Persist source Cannon/Foundation IDs, source force index, source/target surface
+  indices and copied positions, player index, fire_tick and impact_tick in
+  `storage.in_flight_shots[id]`. No live source entity is needed for impact.
+* `storage.shots_by_tick[impact_tick]` contains shot IDs. Every tick looks up
+  only the current bucket; no Foundation or in-flight list scan is performed.
+* Impact creates base `big-explosion` and deals 250 explosion damage in radius 6
+  to other non-neutral forces that are neither friends nor cease-fire partners
+  of the source force at impact time. Self/allied/neutral entities are excluded.
+  Ordinary damage resistances apply. No terrain destruction or chart reveal.
+* Fired shots survive source mining/destruction and save/load with original
+  deadlines. Target surface deletion/clearing or loss of generated impact chunks
+  cancels the shot with notification and no refund. Force merging transfers
+  attribution to the destination force. Missing source force cancels safely.
+
+All delay, radius and damage values are test constants, not final balance.
 
 ## 9.3 Interplanetary Fire
 
@@ -434,7 +478,8 @@ Potential future systems include:
 * target uncertainty;
 * temporary impact observation.
 
-Do not implement any of these until their rules are explicitly specified.
+Beyond Stage 3's generated-but-uncharted coordinate targeting, these systems
+remain future scope.
 
 ---
 
@@ -557,7 +602,7 @@ Stonehenge is an inspiration, not the identity of this mod.
 
 # 13. Prototype Test Scope
 
-The first Codex implementation should create only the minimum system necessary to answer the following questions:
+Stages 1 and 2 establish the following foundation; preserve them in Stage 3:
 
 ### Test A — Foundation tile
 
@@ -586,35 +631,33 @@ Can Foundation ↔ Cannon relationships remain valid through:
 * robot deconstruction;
 * save/load.
 
-### Test F — Future production architecture
+### Test F — Validated production architecture
 
-Determine whether an `assembling-machine`-derived Foundation plus minimal
-runtime state is technically suitable for later ammunition production and
-visible production progress.
+Retain the validated `assembling-machine` Foundation, visible production
+progress and the two-shot stop/consume/resume runtime loop.
 
 Do not implement the full ammunition system merely to complete Test F.
 
-A minimal experimental implementation is acceptable if necessary to evaluate
-production behavior.
+### Test G - Same-surface firing
+
+Validate source selection, zero-ammo refusal, two successive shots, exact
+300-tick impacts, damage filtering, production resumption, save/load in flight,
+source removal in flight, and generated uncharted distant targets.
 
 ---
 
-# 14. Explicitly Out of Scope for Initial Prototype
+# 14. Explicitly Out of Scope for Stage 3
 
 Do not implement these systems unless separately requested:
 
 * interplanetary targeting;
 * inter-surface projectile travel;
-* same-surface artillery targeting;
 * enemy auto-targeting;
 * custom target-selection GUI;
 * ammunition balance;
 * final ammunition recipes;
-* two-shot magazine logic;
 * capacitor charging;
 * cooling;
-* firing;
-* damage;
 * crater generation;
 * map reveal;
 * reconnaissance;
@@ -699,17 +742,17 @@ Current priority order:
 2. Construction workflow
 3. Foundation tile requirement
 4. Foundation / Cannon relationship
-5. Evaluate rocket-silo production architecture
+5. Assembling-machine production and two-shot runtime magazine (validated)
 6. Placeholder graphics
+7. Same-surface firing and delayed test impacts (Stage 3)
 ------------------------------
 Future development
 ------------------------------
-7. Ammunition manufacturing
-8. Energy / charging
-9. Same-surface firing
+8. Final ammunition manufacturing
+9. Energy / charging
 10. Interplanetary targeting
 11. Interplanetary firing
-12. Damage and impact system
+12. Final damage and impact system
 13. Visual effects and animation
 14. Balancing
 15. Final graphics and audio

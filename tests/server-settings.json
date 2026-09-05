@@ -1,0 +1,7 @@
+{
+  "name": "Isolated Stage 3 test",
+  "visibility": {"public": false, "lan": false},
+  "require_user_verification": false,
+  "auto_pause": false,
+  "autosave_interval": 0
+}

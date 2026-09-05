@@ -13,6 +13,27 @@ local test_shell_name = "interplanetary-artillery-test-shell"
 
 data:extend({
   {
+    type = "custom-input",
+    name = "interplanetary-artillery-aim",
+    key_sequence = "CONTROL + SHIFT + F",
+    consuming = "none",
+    action = "lua",
+  },
+  {
+    type = "selection-tool",
+    name = "interplanetary-artillery-target",
+    icon = "__base__/graphics/icons/artillery-targeting-remote.png",
+    flags = {"only-in-cursor", "not-stackable", "spawnable"},
+    hidden = true,
+    stack_size = 1,
+    subgroup = "other",
+    select = {border_color = {1, 0.25, 0.1}, mode = {"nothing"}, cursor_box_type = "entity"},
+    alt_select = {border_color = {1, 0.25, 0.1}, mode = {"nothing"}, cursor_box_type = "entity"},
+  },
+})
+
+data:extend({
+  {
     type = "collision-layer",
     name = foundation_tile_layer,
   },
@@ -187,7 +208,7 @@ data:extend({
             width = 608,
             height = 596,
             shift = util.by_pixel(3, -1),
-            scale = 1.55,
+            scale = 0.9,
           },
           {
             filename = "__base__/graphics/entity/rocket-silo/00-rocket-silo-shadow.png",
@@ -196,7 +217,7 @@ data:extend({
             height = 578,
             draw_as_shadow = true,
             shift = util.by_pixel(7, 2),
-            scale = 1.55,
+            scale = 0.9,
           },
         },
       },
@@ -239,6 +260,7 @@ data:extend({
     dying_explosion = "medium-explosion",
     collision_box = {{-1.2, -1.2}, {1.2, 1.2}},
     selection_box = {{-1.5, -1.5}, {1.5, 1.5}},
+    selection_priority = 60,
     collision_mask = {layers = {[cannon_collision_layer] = true}},
     tile_width = 3,
     tile_height = 3,
@@ -253,7 +275,7 @@ data:extend({
       width = 207,
       height = 199,
       shift = util.by_pixel(0, 3),
-      scale = 1.2,
+      scale = 0.5,
     },
   },
 })
