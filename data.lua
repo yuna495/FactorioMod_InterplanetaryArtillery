@@ -14,6 +14,14 @@ local test_shell_name = "interplanetary-artillery-test-shell"
 data:extend({
   {
     type = "custom-input",
+    name = "interplanetary-artillery-cancel-aim",
+    key_sequence = "",
+    linked_game_control = "clear-cursor",
+    consuming = "none",
+    action = "lua",
+  },
+  {
+    type = "custom-input",
     name = "interplanetary-artillery-aim",
     key_sequence = "CONTROL + SHIFT + F",
     consuming = "none",

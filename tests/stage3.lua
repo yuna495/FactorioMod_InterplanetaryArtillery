@@ -66,7 +66,7 @@ local function launch(test)
   local player, s, a, b = test_player(), test.surface, test.a, test.b
   local record = storage.foundations[a.foundation_id]
   check(record.loaded_shots == 2 and not a.foundation.get_recipe(), "actual production capped and stopped at two")
-  check(not firing.fire(player, a.cannon_id, game.surfaces.nauvis, target), "cross-surface rejected")
+  check(not firing.fire(player, a.cannon_id, nil, target), "missing surface rejected")
   check(not firing.fire(player, a.cannon_id, s, {x = 500016, y = 500016}), "ungenerated target rejected")
   check(not firing.fire(player, a.cannon_id, s, {x = 0/0, y = 0}), "NaN rejected")
   check(not firing.fire(player, a.cannon_id, s, {x = math.huge, y = 0}), "infinity rejected")

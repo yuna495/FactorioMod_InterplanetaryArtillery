@@ -21,7 +21,7 @@ The weapon is not intended to be a direct replacement or simple upgrade for vani
 
 # 2. Current Development Stage
 
-The current goal is **Prototype Stage 3 - Firing Architecture Validation**.
+The current goal is **Prototype Stage 4 - Inter-surface Firing Validation**.
 
 Do not implement the complete interplanetary artillery system yet.
 
@@ -40,9 +40,13 @@ The established prototype consists of:
 Stages 1 and 2 have validated the 15x15 Foundation, dedicated tile requirement,
 separate Cannon, runtime attachment, assembling-machine production, hidden test
 shell, and persistent two-shot magazine with stop/resume behavior.
-Stage 3 adds manual same-surface targeting, one-shot consumption, persistent
-delayed impacts and temporary enemy-only area damage. Interplanetary fire,
-charging and advanced animation remain future scope.
+Stage 3 validated manual same-surface targeting, shot creation and consumption,
+scheduled delayed impacts, save/load, source-independent shots and generated
+but uncharted targets. These are the current validated architecture.
+Stage 4 has validated the same architecture across different target surfaces
+in Factorio 2.0.77, including Nauvis to Vulcanus and Gleba, concurrent shots,
+source removal and an actual in-flight save/reload. See STAGE4-VALIDATION.md.
+Final planet targeting UX, charging and advanced animation remain future scope.
 
 ---
 
@@ -389,28 +393,33 @@ The expected range should greatly exceed vanilla artillery.
 
 Exact range is not yet specified.
 
-### Stage 3 Operation and Validation
+### Validated Firing Architecture (Stages 3 and 4)
 
 * Hover a Cannon and press Control + Shift + F to enter targeting mode.
   The Cannon has higher selection priority than the Foundation at the mount.
 * A cursor-only selection tool selects a ground point (or the center of a
   dragged rectangle). Each completed selection requests one shot.
 * The source Cannon unit number is stored per player. Selection never silently
-  substitutes another Cannon. Releasing the cursor tool exits targeting mode.
+  substitutes another Cannon. Surface/controller changes and passive cursor
+  changes retain this ID. The explicit clear-cursor control (default Q) clears
+  the ID. With no Cannon hovered, the aim key re-equips the tool for the retained
+  source after validating it. A hovered Cannon explicitly selects that Cannon.
 * `/monolith-fire-test x y` targets coordinates using that explicitly selected
   Cannon; `/monolith-shot-status` reports its identity and owned in-flight shots.
 * Validate live Cannon and Foundation, reciprocal attachment, matching position,
   force and surface, player ownership, at least one loaded shot, and finite
-  target coordinates on the source surface before consuming ammunition.
+  target coordinates on the chosen target surface before consuming ammunition.
+  The Cannon and Foundation must share a surface; the target need not share it.
 * No weapon range limit is imposed. The impact footprint must remain within
   the engine's +/-1,000,000 tile bounds and configured finite map dimensions.
 * Generated but uncharted terrain is allowed. The tool does not reveal terrain;
   coordinate commands support blind targeting independently of map UI limits.
 * All chunks touched by the radius-6 impact footprint must already be generated.
-  Ungenerated targets are rejected without ammunition loss. Stage 3 does not
+  Ungenerated targets are rejected without ammunition loss. Stage 4 does not
   request chunk generation, avoiding map-generation stalls and distant expansion.
 * On acceptance consume exactly one loaded shot, resume production, allocate
-  a monotonically increasing shot ID and schedule impact 300 ticks later.
+  a monotonically increasing shot ID and schedule impact 300 ticks later for
+  same-surface shots, or 900 ticks later for different surfaces.
 * Persist source Cannon/Foundation IDs, source force index, source/target surface
   indices and copied positions, player index, fire_tick and impact_tick in
   `storage.in_flight_shots[id]`. No live source entity is needed for impact.
@@ -428,6 +437,46 @@ Exact range is not yet specified.
 All delay, radius and damage values are test constants, not final balance.
 
 ## 9.3 Interplanetary Fire
+
+### Stage 4 Prototype
+
+Same-surface and inter-surface shots use the same `firing.fire()` validation,
+ammunition consumption and `storage.in_flight_shots` / `storage.shots_by_tick`
+architecture. No separate planetary shot table is introduced.
+
+The targeting tool uses `on_player_selected_area.surface` and `.area` as the
+destination, never the Cannon surface or the character's physical surface.
+The intended operation is to select the source, enter remote view, switch
+surface, and select ground. Native remote-view cursor carryover and mouse input
+remain explicit in-game verification items; re-equipping with the aim key uses
+the retained source. The mod does not unlock or open remote surfaces itself.
+
+`/monolith-fire-surface-test <surface-name-or-index> <x> <y>` uses the explicitly
+selected Cannon and the ordinary firing path. The surface must already exist.
+Names containing spaces may be supplied as the entire prefix before x and y,
+optionally surrounded by double quotes. Exact names take precedence over indices.
+The existing `/monolith-fire-test x y` uses the current controller's surface.
+Notifications identify destination surface and actual test flight time.
+
+Deleting or clearing only the source surface does not cancel an accepted shot
+to another surface. Deleting/clearing the target cancels it without refund;
+if source and target coincide, the target cancellation rule applies. Source
+force attribution and impact-time diplomacy rules remain unchanged.
+
+An existing planet surface, force unlock state, physical visitation, charting,
+chunk generation and remote-view accessibility are separate conditions. Runtime
+firing currently requires an existing generated target, not a visit, unlock or
+chart check. This is a test policy, not the final progression/access policy.
+The mod does not create missing planet surfaces or generate their chunks.
+Final unvisited-planet eligibility and asynchronous generation policy remain open.
+
+An isolated 2.0.77 test also validated request-only chunk generation with later
+`on_chunk_generated` notification. This is not enabled in the weapon: readiness
+deadlines, outstanding-request limits and missing-at-impact behavior need a
+future specification. API event routing is covered by mocked handler tests;
+native remote-view mouse selection and cursor carryover are not yet validated.
+
+### Future Design
 
 The defining late-game feature is firing from one planetary surface to another.
 
@@ -478,7 +527,7 @@ Potential future systems include:
 * target uncertainty;
 * temporary impact observation.
 
-Beyond Stage 3's generated-but-uncharted coordinate targeting, these systems
+Beyond the current generated-but-uncharted coordinate targeting, these systems
 remain future scope.
 
 ---
@@ -602,7 +651,7 @@ Stonehenge is an inspiration, not the identity of this mod.
 
 # 13. Prototype Test Scope
 
-Stages 1 and 2 establish the following foundation; preserve them in Stage 3:
+Stages 1 through 3 establish the following foundation; preserve them in Stage 4:
 
 ### Test A — Foundation tile
 
@@ -646,12 +695,21 @@ source removal in flight, and generated uncharted distant targets.
 
 ---
 
-# 14. Explicitly Out of Scope for Stage 3
+### Test H - Inter-surface firing
+
+Validate different destination surfaces, 900-tick impact, simultaneous local
+and remote shots, persistence of surface/position/deadline through save/load,
+source removal, source surface removal, target deletion/clearing, unchanged
+production resumption, uncharted targets and ungenerated rejection. Test a real
+Space Age planet when available and separate test surfaces with base only.
+
+# 14. Explicitly Out of Scope for Stage 4
 
 Do not implement these systems unless separately requested:
 
-* interplanetary targeting;
-* inter-surface projectile travel;
+* final planet targeting UX and GUI;
+* visible inter-surface projectile travel;
+* planet distance balance and orbital mechanics;
 * enemy auto-targeting;
 * custom target-selection GUI;
 * ammunition balance;
@@ -744,14 +802,14 @@ Current priority order:
 4. Foundation / Cannon relationship
 5. Assembling-machine production and two-shot runtime magazine (validated)
 6. Placeholder graphics
-7. Same-surface firing and delayed test impacts (Stage 3)
+7. Same-surface firing and delayed test impacts (validated)
+8. Inter-surface firing with the same shot state (validated, Stage 4)
 ------------------------------
 Future development
 ------------------------------
-8. Final ammunition manufacturing
-9. Energy / charging
-10. Interplanetary targeting
-11. Interplanetary firing
+9. Final ammunition manufacturing
+10. Energy / charging
+11. Final interplanetary targeting UX and distance rules
 12. Final damage and impact system
 13. Visual effects and animation
 14. Balancing

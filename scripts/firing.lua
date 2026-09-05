@@ -1,11 +1,17 @@
 local firing = {}
 local TOOL = "interplanetary-artillery-target"
 local CANNON = "interplanetary-artillery-cannon"
-local FLIGHT_TICKS = 300
+local SAME_SURFACE_FLIGHT_TICKS = 300
+local INTER_SURFACE_FLIGHT_TICKS = 900
 local IMPACT_RADIUS = 6
 local IMPACT_DAMAGE = 250
 local MAP_LIMIT = 1000000
 local resume_production
+
+local function flight_ticks(source_surface_index, target_surface_index)
+  if source_surface_index == target_surface_index then return SAME_SURFACE_FLIGHT_TICKS end
+  return INTER_SURFACE_FLIGHT_TICKS
+end
 
 function firing.init()
   storage.in_flight_shots = storage.in_flight_shots or {}
@@ -57,8 +63,8 @@ function firing.fire(player, cannon_id, surface, position)
   firing.init()
   local foundation, cannon = source(player, cannon_id)
   if not foundation then message(player, cannon); return nil end
-  if not surface or not surface.valid or surface.index ~= cannon.entity.surface.index then
-    message(player, "wrong-surface"); return nil
+  if not surface or not surface.valid then
+    message(player, "invalid-surface"); return nil
   end
   if not valid_position(surface, position) then message(player, "invalid-target"); return nil end
   if not impact_chunks_generated(surface, position) then message(player, "ungenerated-target"); return nil end
@@ -76,7 +82,7 @@ function firing.fire(player, cannon_id, surface, position)
     target_position = {x = position.x, y = position.y},
     player_index = player.index,
     fire_tick = game.tick,
-    impact_tick = game.tick + FLIGHT_TICKS,
+    impact_tick = game.tick + flight_ticks(cannon.entity.surface.index, surface.index),
   }
   foundation.loaded_shots = foundation.loaded_shots - 1
   resume_production(foundation)
@@ -85,7 +91,8 @@ function firing.fire(player, cannon_id, surface, position)
   local bucket = storage.shots_by_tick[shot.impact_tick] or {}
   bucket[#bucket + 1] = id
   storage.shots_by_tick[shot.impact_tick] = bucket
-  message(player, "shot-fired", id, cannon_id, position.x, position.y, foundation.loaded_shots)
+  message(player, "shot-fired", id, cannon_id, position.x, position.y, foundation.loaded_shots,
+    surface.name, (shot.impact_tick - shot.fire_tick) / 60)
   return id
 end
 
@@ -107,7 +114,7 @@ local function impact(shot)
       end
     end
   end
-  message(player, "shot-impact", shot.id, shot.target_position.x, shot.target_position.y)
+  message(player, "shot-impact", shot.id, shot.target_position.x, shot.target_position.y, surface.name)
 end
 
 local function on_tick(event)
@@ -126,10 +133,11 @@ local function aim(event)
   firing.init()
   local player = game.get_player(event.player_index)
   local entity = player.selected
-  if not entity or not entity.valid or entity.name ~= CANNON then
+  local id = storage.player_cannon_targets[player.index]
+  if entity and entity.valid and entity.name == CANNON then id = entity.unit_number end
+  if not id then
     message(player, "select-cannon"); return
   end
-  local id = entity.unit_number
   local foundation, reason = source(player, id)
   if not foundation then message(player, reason); return end
   if not player.clear_cursor() or not player.cursor_stack then message(player, "cursor-blocked"); return end
@@ -163,10 +171,11 @@ function firing.register(resume)
   script.on_event("interplanetary-artillery-aim", aim)
   script.on_event(defines.events.on_player_selected_area, selected_area)
   script.on_event(defines.events.on_player_alt_selected_area, selected_area)
-  script.on_event(defines.events.on_player_cursor_stack_changed, function(event)
+  -- Controller transitions may replace the cursor. Only explicit user input
+  -- cancels the retained source, regardless of native cursor-event ordering.
+  script.on_event("interplanetary-artillery-cancel-aim", function(event)
     local player = game.get_player(event.player_index)
-    local stack = player.cursor_stack
-    if storage.player_cannon_targets and (not stack or not stack.valid_for_read or stack.name ~= TOOL) then
+    if storage.player_cannon_targets then
       storage.player_cannon_targets[player.index] = nil
     end
   end)
@@ -198,10 +207,25 @@ function firing.register(resume)
       if shot.source_force_index == player.force.index then
         count = count + 1
         message(player, "shot-status-entry", shot.id, shot.cannon_unit_number, shot.target_position.x,
-          shot.target_position.y, shot.impact_tick - game.tick)
+          shot.target_position.y, shot.impact_tick - game.tick, shot.target_surface_index)
       end
     end
     message(player, "shot-status", storage.player_cannon_targets[player.index] or "-", count)
+  end)
+  commands.add_command("monolith-fire-surface-test", {"interplanetary-artillery.fire-surface-command"}, function(command)
+    local player = command.player_index and game.get_player(command.player_index)
+    if not player then return end
+    firing.init()
+    local name, x, y = (command.parameter or ""):match("^%s*(.-)%s+(%S+)%s+(%S+)%s*$")
+    x, y = tonumber(x), tonumber(y)
+    if not name or name == "" or not x or not y then message(player, "fire-surface-command"); return end
+    name = name:match('^"(.*)"$') or name
+    local surface = game.get_surface(name)
+    local index = tonumber(name)
+    if not surface and index and index >= 1 and index <= 4294967295 and index % 1 == 0 then
+      surface = game.get_surface(index)
+    end
+    firing.fire(player, storage.player_cannon_targets[player.index], surface, {x = x, y = y})
   end)
 end
 
