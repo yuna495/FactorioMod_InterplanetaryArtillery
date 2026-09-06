@@ -1,5 +1,6 @@
 local firing = {}
-local TOOL = "interplanetary-artillery-target"
+local TOOL = "interplanetary-artillery-targeting-remote"
+local LEGACY_TOOL = "interplanetary-artillery-target"
 local CANNON = "interplanetary-artillery-cannon"
 local SAME_SURFACE_FLIGHT_TICKS = 300
 local INTER_SURFACE_FLIGHT_TICKS = 900
@@ -133,21 +134,19 @@ local function aim(event)
   firing.init()
   local player = game.get_player(event.player_index)
   local entity = player.selected
-  local id = storage.player_cannon_targets[player.index]
-  if entity and entity.valid and entity.name == CANNON then id = entity.unit_number end
-  if not id then
+  if not entity or not entity.valid or entity.name ~= CANNON then
     message(player, "select-cannon"); return
   end
+  local id = entity.unit_number
   local foundation, reason = source(player, id)
   if not foundation then message(player, reason); return end
-  if not player.clear_cursor() or not player.cursor_stack then message(player, "cursor-blocked"); return end
-  if not player.cursor_stack.set_stack{name = TOOL, count = 1} then message(player, "cursor-blocked"); return end
   storage.player_cannon_targets[player.index] = id
   message(player, "aim-ready", id, foundation.loaded_shots or 0)
 end
 
 local function selected_area(event)
-  if event.item ~= TOOL then return end
+  if event.item ~= TOOL and event.item ~= LEGACY_TOOL then return end
+  firing.init()
   local player = game.get_player(event.player_index)
   local area = event.area
   firing.fire(player, storage.player_cannon_targets[player.index], event.surface, {
@@ -171,14 +170,6 @@ function firing.register(resume)
   script.on_event("interplanetary-artillery-aim", aim)
   script.on_event(defines.events.on_player_selected_area, selected_area)
   script.on_event(defines.events.on_player_alt_selected_area, selected_area)
-  -- Controller transitions may replace the cursor. Only explicit user input
-  -- cancels the retained source, regardless of native cursor-event ordering.
-  script.on_event("interplanetary-artillery-cancel-aim", function(event)
-    local player = game.get_player(event.player_index)
-    if storage.player_cannon_targets then
-      storage.player_cannon_targets[player.index] = nil
-    end
-  end)
   script.on_event(defines.events.on_player_removed, function(event)
     if storage.player_cannon_targets then storage.player_cannon_targets[event.player_index] = nil end
   end)

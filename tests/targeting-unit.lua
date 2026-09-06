@@ -31,10 +31,12 @@ handlers["interplanetary-artillery-aim"]{player_index = 1}
 assert(storage.player_cannon_targets[1] == 1)
 assert(not handlers.on_player_cursor_stack_changed)
 local calls = {}
+local real_fire = firing.fire
 firing.fire = function(player, id, surface, position)
   calls[#calls+1] = {player = player.index, id = id, surface = surface, position = position}
 end
-handlers.on_player_selected_area{player_index = 1, item = "interplanetary-artillery-target",
+players[1].surface = source_surface
+handlers.on_player_selected_area{player_index = 1, item = "interplanetary-artillery-targeting-remote",
   surface = target_surface, area = {left_top = {x = 10, y = 20}, right_bottom = {x = 12, y = 22}}}
 assert(calls[1].id == 1 and calls[1].surface == target_surface and calls[1].position.x == 11)
 local command = command_handlers["monolith-fire-surface-test"]
@@ -48,13 +50,44 @@ command{player_index = 1, parameter = "vulcanus invalid 40"}
 assert(#calls == 5)
 command{player_index = 1, parameter = "missing 30 40"}
 assert(#calls == 6 and calls[6].surface == nil)
-handlers["interplanetary-artillery-cancel-aim"]{player_index = 1}
-assert(storage.player_cannon_targets[1] == nil and storage.player_cannon_targets[2] == 2)
--- Retained sources are revalidated before rearming, including force changes.
-players[2].selected = nil
+assert(not handlers["interplanetary-artillery-cancel-aim"])
+assert(storage.player_cannon_targets[1] == 1 and storage.player_cannon_targets[2] == 2)
+-- Exercise the real validation, ammunition and scheduling path from the event.
+firing.fire = real_fire
+game.tick = 100
+target_surface.valid = true
+target_surface.name = "test target"
+target_surface.map_gen_settings = {}
+target_surface.is_chunk_generated = function() return true end
+local target_event = {player_index = 1, item = "interplanetary-artillery-targeting-remote",
+  surface = target_surface, area = {left_top = {x = 10, y = 20}, right_bottom = {x = 12, y = 22}}}
+handlers.on_player_selected_area(target_event)
+local shot = storage.in_flight_shots[1]
+assert(shot.source_surface_index == 1 and shot.target_surface_index == 2)
+assert(shot.target_position.x == 11 and shot.target_position.y == 21)
+assert(shot.impact_tick == 1000 and storage.foundations[1].loaded_shots == 1)
+handlers.on_player_alt_selected_area(target_event)
+assert(storage.foundations[1].loaded_shots == 0 and storage.next_shot_id == 3)
+handlers.on_player_selected_area(target_event)
+assert(storage.next_shot_id == 3)
+storage.foundations[1].loaded_shots = 1
+players[1].force = {index = 9}
+handlers.on_player_selected_area(target_event)
+assert(storage.foundations[1].loaded_shots == 1 and storage.next_shot_id == 3)
+players[1].force = force
+storage.cannons[1].entity.valid = false
+handlers.on_player_selected_area(target_event)
+assert(storage.foundations[1].loaded_shots == 1 and storage.next_shot_id == 3)
+target_event.item = "artillery-targeting-remote"
+handlers.on_player_selected_area(target_event)
+assert(storage.next_shot_id == 3)
+-- Explicit registration also rejects wrong-force and destroyed Cannons.
+storage.player_cannon_targets[2] = nil
 players[2].force = {index = 9}
 players[2].clear_cursor = function() error("wrong-force source was accepted") end
 handlers["interplanetary-artillery-aim"]{player_index = 2}
+assert(storage.player_cannon_targets[2] == nil)
 storage.cannons[2].entity.valid = false
 handlers["interplanetary-artillery-aim"]{player_index = 2}
+assert(storage.player_cannon_targets[2] == nil)
 print("TARGETING UNIT ALL PASSED")

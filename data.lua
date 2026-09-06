@@ -11,15 +11,27 @@ local cannon_collision_layer = "interplanetary_artillery_cannon"
 local foundation_recipe_category = "interplanetary-artillery-foundation"
 local test_shell_name = "interplanetary-artillery-test-shell"
 
+-- Native artillery-remote actions require an eligible artillery weapon.
+local remote = {
+  type = "selection-tool",
+  name = "interplanetary-artillery-targeting-remote",
+  icon = "__base__/graphics/icons/artillery-targeting-remote.png",
+  flags = {"only-in-cursor", "not-stackable", "spawnable"},
+  stack_size = 1,
+  subgroup = "spawnables",
+  select = {border_color = {1, 0.25, 0.1}, mode = {"nothing"}, cursor_box_type = "entity"},
+  alt_select = {border_color = {1, 0.25, 0.1}, mode = {"nothing"}, cursor_box_type = "entity"},
+}
+local shortcut = table.deepcopy(data.raw.shortcut["give-artillery-targeting-remote"])
+shortcut.name = "interplanetary-artillery-targeting"
+shortcut.localised_name = {"shortcut-name.interplanetary-artillery-targeting"}
+shortcut.item_to_spawn = remote.name
+shortcut.associated_control_input = nil
+shortcut.technology_to_unlock = nil
+shortcut.unavailable_until_unlocked = false
+data:extend({remote, shortcut})
+
 data:extend({
-  {
-    type = "custom-input",
-    name = "interplanetary-artillery-cancel-aim",
-    key_sequence = "",
-    linked_game_control = "clear-cursor",
-    consuming = "none",
-    action = "lua",
-  },
   {
     type = "custom-input",
     name = "interplanetary-artillery-aim",

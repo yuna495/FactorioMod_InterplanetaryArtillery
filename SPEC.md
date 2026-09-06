@@ -19,9 +19,9 @@ The weapon is not intended to be a direct replacement or simple upgrade for vani
 
 ---
 
-# 2. Current Development Stage
+## 2. Current Development Stage
 
-The current goal is **Prototype Stage 4 - Inter-surface Firing Validation**.
+The current goal is **Prototype Stage 5 - Targeting Remote UX Validation**.
 
 Do not implement the complete interplanetary artillery system yet.
 
@@ -48,9 +48,28 @@ in Factorio 2.0.77, including Nauvis to Vulcanus and Gleba, concurrent shots,
 source removal and an actual in-flight save/reload. See STAGE4-VALIDATION.md.
 Final planet targeting UX, charging and advanced animation remain future scope.
 
+Stage 5 investigates a dedicated shortcut-spawned targeting remote. The Stage 4
+mouse UX was reported to lose its cursor when entering map/remote view; the
+inter-surface shot architecture itself remains validated. The first candidate
+was a vanilla-derived artillery-remote capsule with a dedicated flare/category.
+The decision below replaces that candidate without duplicating firing.
+Control + Shift + F will register the hovered source only. Source registration
+is independent of the cursor: Q clears the cursor, not the registered source.
+The next explicit source registration replaces the player-specific source.
+All clicks must use the existing firing validation and shot architecture.
+
+Stage 5 decision: user testing confirmed the native no-artillery-in-range
+refusal. The capsule candidate is rejected. The dedicated remote is a spawnable
+selection-tool equipped by a spawn-item shortcut. Its selected-area event
+supplies target surface and rectangle center to the existing firing path.
+No dedicated flare, ammo category, native artillery action or tick scan is used.
+The old hidden tool remains a save-compatible alias, not a second UX.
+Actual remote-view mouse operation and automatic cursor carryover remain
+unverified; reacquiring the tool through the shortcut preserves the source.
+
 ---
 
-# 3. Final Gameplay Concept
+## 3. Final Gameplay Concept
 
 The final Monolith-class Interplanetary Cannon is composed of three physical layers:
 
@@ -84,9 +103,9 @@ This staged construction is a core part of the mod design and should not be repl
 
 ---
 
-# 4. Monolith Foundation Tile
+## 4. Monolith Foundation Tile
 
-## 4.1 Purpose
+### 4.1 Purpose
 
 The Monolith Foundation Tile represents the specially reinforced ground required to support the cannon.
 
@@ -100,7 +119,7 @@ The tile exists primarily to:
 * prevent the cannon from being casually placed anywhere;
 * provide a foundation for future environmental and planetary restrictions.
 
-## 4.2 Initial Requirements
+### 4.2 Initial Requirements
 
 For the prototype:
 
@@ -112,7 +131,7 @@ For the prototype:
 
 The exact production cost is not final and may use temporary development values.
 
-## 4.3 Occupied Tile Removal
+### 4.3 Occupied Tile Removal
 
 While a Monolith Foundation exists, removing or replacing the required
 Foundation Tiles beneath it should not leave the installation in an invalid
@@ -121,7 +140,7 @@ state.
 The prototype may restore mined Foundation Tiles after tile mining events when
 the engine does not provide a true pre-mine rejection point for tiles.
 
-## 4.4 Future Requirements
+### 4.4 Future Requirements
 
 Future versions may restrict placement based on:
 
@@ -135,9 +154,9 @@ These restrictions are not part of the initial prototype.
 
 ---
 
-# 5. Monolith Foundation
+## 5. Monolith Foundation
 
-## 5.1 Role
+### 5.1 Role
 
 The Monolith Foundation is the primary infrastructure entity of the weapon.
 
@@ -153,7 +172,7 @@ It represents:
 
 The final design should treat the foundation as a machine, not merely decorative scenery.
 
-## 5.2 Size
+### 5.2 Size
 
 Target footprint:
 
@@ -165,7 +184,7 @@ If Factorio prototype limitations make an exact 15 × 15 entity impractical, do 
 
 Report the limitation before changing the specification.
 
-## 5.3 Placement
+### 5.3 Placement
 
 The Monolith Foundation:
 
@@ -180,7 +199,7 @@ The exact tile coverage rule should initially be:
 
 Do not accept partial coverage.
 
-## 5.4 Entity Type
+### 5.4 Entity Type
 
 The exact prototype type is not permanently fixed yet.
 
@@ -207,9 +226,9 @@ only for its progress presentation.
 
 ---
 
-# 6. Monolith Cannon
+## 6. Monolith Cannon
 
-## 6.1 Role
+### 6.1 Role
 
 The Monolith Cannon is the actual weapon assembly installed on top of a completed Monolith Foundation.
 
@@ -223,7 +242,7 @@ It represents:
 
 The Foundation and Cannon are intentionally separate entities.
 
-## 6.2 Placement Restriction
+### 6.2 Placement Restriction
 
 The Monolith Cannon may only be placed:
 
@@ -233,7 +252,7 @@ The Monolith Cannon may only be placed:
 
 It must not be placeable independently on ordinary terrain.
 
-## 6.3 Relationship to Foundation
+### 6.3 Relationship to Foundation
 
 A Cannon belongs to exactly one Foundation.
 
@@ -247,7 +266,7 @@ The runtime implementation must prevent:
 * one Cannon attaching to multiple Foundations;
 * orphaned entity references after mining or destruction.
 
-## 6.4 Destruction and Removal
+### 6.4 Destruction and Removal
 
 The long-term intended behavior is:
 
@@ -266,9 +285,9 @@ delete the attached Cannon instead of refunding it.
 
 ---
 
-# 7. Ammunition Concept
+## 7. Ammunition Concept
 
-## 7.1 Final Design
+### 7.1 Final Design
 
 The Monolith does not primarily consume completed artillery shells delivered by inserters.
 
@@ -287,7 +306,7 @@ Example material categories may eventually include:
 
 Exact ingredients and quantities are not yet specified.
 
-## 7.2 Internal Ammunition Capacity
+### 7.2 Internal Ammunition Capacity
 
 Current intended maximum:
 
@@ -315,7 +334,7 @@ or equivalent.
 
 The player should eventually be able to see the progress of the next round being assembled.
 
-## 7.3 Ammunition Representation
+### 7.3 Ammunition Representation
 
 The final design should preferably avoid ordinary inventory behavior where the player can casually carry large numbers of completed interplanetary shells.
 
@@ -342,7 +361,7 @@ Charging, balancing and final ammunition logistics remain out of scope.
 
 ---
 
-# 8. Energy System
+## 8. Energy System
 
 The Monolith is intended to require extreme amounts of electrical energy.
 
@@ -368,9 +387,9 @@ The initial prototype does not need to implement the complete charging system.
 
 ---
 
-# 9. Firing Model
+## 9. Firing Model
 
-## 9.1 General Role
+### 9.1 General Role
 
 The Monolith is a strategic weapon.
 
@@ -385,7 +404,7 @@ Expected characteristics:
 * large impact area;
 * deliberate target selection.
 
-## 9.2 Same-Surface Fire
+### 9.2 Same-Surface Fire
 
 Stage 3 supports manual long-range bombardment on the same surface.
 
@@ -393,17 +412,17 @@ The expected range should greatly exceed vanilla artillery.
 
 Exact range is not yet specified.
 
-### Validated Firing Architecture (Stages 3 and 4)
+#### Validated Firing Architecture (Stages 3 and 4)
 
-* Hover a Cannon and press Control + Shift + F to enter targeting mode.
+* Hover a Cannon and press Control + Shift + F to register the firing source.
   The Cannon has higher selection priority than the Foundation at the mount.
 * A cursor-only selection tool selects a ground point (or the center of a
   dragged rectangle). Each completed selection requests one shot.
 * The source Cannon unit number is stored per player. Selection never silently
   substitutes another Cannon. Surface/controller changes and passive cursor
-  changes retain this ID. The explicit clear-cursor control (default Q) clears
-  the ID. With no Cannon hovered, the aim key re-equips the tool for the retained
-  source after validating it. A hovered Cannon explicitly selects that Cannon.
+  changes retain this ID. Q clears only the cursor, not the source ID.
+  The aim key registers a hovered Cannon only. The shortcut equips the remote
+  without replacing the source, including after moving to another view.
 * `/monolith-fire-test x y` targets coordinates using that explicitly selected
   Cannon; `/monolith-shot-status` reports its identity and owned in-flight shots.
 * Validate live Cannon and Foundation, reciprocal attachment, matching position,
@@ -436,9 +455,9 @@ Exact range is not yet specified.
 
 All delay, radius and damage values are test constants, not final balance.
 
-## 9.3 Interplanetary Fire
+### 9.3 Interplanetary Fire
 
-### Stage 4 Prototype
+#### Stage 4 Prototype
 
 Same-surface and inter-surface shots use the same `firing.fire()` validation,
 ammunition consumption and `storage.in_flight_shots` / `storage.shots_by_tick`
@@ -448,8 +467,8 @@ The targeting tool uses `on_player_selected_area.surface` and `.area` as the
 destination, never the Cannon surface or the character's physical surface.
 The intended operation is to select the source, enter remote view, switch
 surface, and select ground. Native remote-view cursor carryover and mouse input
-remain explicit in-game verification items; re-equipping with the aim key uses
-the retained source. The mod does not unlock or open remote surfaces itself.
+remain explicit in-game verification items; re-equipping through the shortcut
+uses the retained source. The mod does not unlock or open remote surfaces itself.
 
 `/monolith-fire-surface-test <surface-name-or-index> <x> <y>` uses the explicitly
 selected Cannon and the ordinary firing path. The surface must already exist.
@@ -476,7 +495,7 @@ deadlines, outstanding-request limits and missing-at-impact behavior need a
 future specification. API event routing is covered by mocked handler tests;
 native remote-view mouse selection and cursor carryover are not yet validated.
 
-### Future Design
+#### Future Design
 
 The defining late-game feature is firing from one planetary surface to another.
 
@@ -511,7 +530,7 @@ Possible eventual sequence:
 7. calculate travel time;
 8. resolve impact on destination surface.
 
-## 9.4 Unexplored Areas
+### 9.4 Unexplored Areas
 
 Interplanetary fire may eventually permit bombardment of areas that have not been charted by the player.
 
@@ -532,7 +551,7 @@ remain future scope.
 
 ---
 
-# 10. Multiple Cannons
+## 10. Multiple Cannons
 
 Each Monolith Cannon is independent.
 
@@ -555,7 +574,7 @@ Do not implement an "eight cannon set bonus" or mandatory Stonehenge layout unle
 
 ---
 
-# 11. Graphics Architecture
+## 11. Graphics Architecture
 
 Final graphics are not available yet.
 
@@ -563,7 +582,7 @@ Development graphics may use placeholders.
 
 The implementation must therefore avoid relying on final sprite dimensions or animation frame counts.
 
-## 11.1 Intended Visual Structure
+### 11.1 Intended Visual Structure
 
 The completed weapon should visually consist of several layers:
 
@@ -592,7 +611,7 @@ The Cannon should eventually support:
 * recoil;
 * firing effects.
 
-## 11.2 Scale
+### 11.2 Scale
 
 Although the structural footprint is approximately 15 × 15 tiles, visual elements such as the barrel may extend significantly outside that footprint.
 
@@ -600,7 +619,7 @@ The final cannon may visually reach approximately 30–40 tiles or more in overa
 
 Collision size and sprite size do not need to match.
 
-## 11.3 Prototype Graphics
+### 11.3 Prototype Graphics
 
 For early testing:
 
@@ -613,7 +632,7 @@ Gameplay architecture must be validated before final graphical production begins
 
 ---
 
-# 12. Naming
+## 12. Naming
 
 Current canonical naming:
 
@@ -649,9 +668,9 @@ Stonehenge is an inspiration, not the identity of this mod.
 
 ---
 
-# 13. Prototype Test Scope
+## 13. Prototype Test Scope
 
-Stages 1 through 3 establish the following foundation; preserve them in Stage 4:
+Stages 1 through 3 establish the following foundation; preserve them in Stage 5:
 
 ### Test A — Foundation tile
 
@@ -703,7 +722,11 @@ source removal, source surface removal, target deletion/clearing, unchanged
 production resumption, uncharted targets and ungenerated rejection. Test a real
 Space Age planet when available and separate test surfaces with base only.
 
-# 14. Explicitly Out of Scope for Stage 4
+Stage 5 adds shortcut-equipped target input, per-player source retention and
+event-surface routing tests. Native mouse/view operation must be distinguished
+from automated firing validation; see STAGE5-VALIDATION.md for remaining checks.
+
+## 14. Explicitly Out of Scope for Stage 5
 
 Do not implement these systems unless separately requested:
 
@@ -733,9 +756,9 @@ Stub code for these systems should also be avoided unless required by the protot
 
 ---
 
-# 15. Implementation Principles
+## 15. Implementation Principles
 
-## 15.1 Specification
+### 15.1 Specification
 
 This file is the source of truth for intended project behavior.
 
@@ -743,7 +766,7 @@ Do not introduce gameplay behavior that contradicts this specification.
 
 If implementation requires a behavior that is not defined here, report the ambiguity rather than inventing a permanent rule.
 
-## 15.2 Factorio API
+### 15.2 Factorio API
 
 Prefer standard Factorio prototype and runtime APIs.
 
@@ -753,7 +776,7 @@ Do not assume arbitrary control over Factorio internals such as rendering, colli
 
 If an intended feature cannot be implemented using supported Factorio 2.0 mod APIs, document the limitation and propose alternatives.
 
-## 15.3 Performance
+### 15.3 Performance
 
 Runtime processing must be event-driven wherever practical.
 
@@ -767,7 +790,7 @@ Avoid:
 
 The final system may involve very large structures and multiple planets, so architecture should remain UPS-conscious from the beginning.
 
-## 15.4 State
+### 15.4 State
 
 Runtime state must use supported persistent mod storage.
 
@@ -783,7 +806,7 @@ State cleanup must occur when entities are:
 
 Save/load behavior must be deterministic.
 
-## 15.5 Multiplayer
+### 15.5 Multiplayer
 
 Architecture must not depend on a single player.
 
@@ -791,7 +814,7 @@ Any runtime behavior should be deterministic and compatible with multiplayer unl
 
 ---
 
-# 16. Development Priority
+## 16. Development Priority
 
 Current priority order:
 
@@ -820,7 +843,7 @@ Do not skip directly to later systems before the basic construction architecture
 
 ---
 
-# 17. Core Design Rule
+## 17. Core Design Rule
 
 When choosing between two implementations, prefer the one that preserves this experience:
 
