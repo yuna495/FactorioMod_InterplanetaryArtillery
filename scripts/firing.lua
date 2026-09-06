@@ -1,24 +1,21 @@
 local firing = {}
+local flight = require("scripts.flight")
+local countdown = require("scripts.countdown")
 local TOOL = "interplanetary-artillery-targeting-remote"
 local LEGACY_TOOL = "interplanetary-artillery-target"
 local CANNON = "interplanetary-artillery-cannon"
-local SAME_SURFACE_FLIGHT_TICKS = 300
-local INTER_SURFACE_FLIGHT_TICKS = 900
 local IMPACT_RADIUS = 6
 local IMPACT_DAMAGE = 250
 local MAP_LIMIT = 1000000
 local resume_production
-
-local function flight_ticks(source_surface_index, target_surface_index)
-  if source_surface_index == target_surface_index then return SAME_SURFACE_FLIGHT_TICKS end
-  return INTER_SURFACE_FLIGHT_TICKS
-end
 
 function firing.init()
   storage.in_flight_shots = storage.in_flight_shots or {}
   storage.shots_by_tick = storage.shots_by_tick or {}
   storage.next_shot_id = storage.next_shot_id or 1
   storage.player_cannon_targets = storage.player_cannon_targets or {}
+  storage.firing_round_robin = storage.firing_round_robin or {}
+  storage.countdown_by_tick = storage.countdown_by_tick or {}
 end
 
 local function message(player, key, ...)
@@ -29,9 +26,9 @@ end
 
 local function source(player, cannon_id)
   local cannon = cannon_id and storage.cannons[cannon_id]
-  if not cannon or not cannon.entity.valid then return nil, "invalid-cannon" end
+  if not cannon or not cannon.entity or not cannon.entity.valid then return nil, "invalid-cannon" end
   local foundation = storage.foundations[cannon.foundation_unit_number]
-  if not foundation or not foundation.entity.valid then return nil, "invalid-attachment" end
+  if not foundation or not foundation.entity or not foundation.entity.valid then return nil, "invalid-attachment" end
   local c, f = cannon.entity, foundation.entity
   if foundation.cannon_unit_number ~= cannon_id or c.surface.index ~= f.surface.index
     or c.force.index ~= f.force.index or c.position.x ~= f.position.x or c.position.y ~= f.position.y then
@@ -70,6 +67,8 @@ function firing.fire(player, cannon_id, surface, position)
   if not valid_position(surface, position) then message(player, "invalid-target"); return nil end
   if not impact_chunks_generated(surface, position) then message(player, "ungenerated-target"); return nil end
   if (foundation.loaded_shots or 0) < 1 then message(player, "no-loaded-shots"); return nil end
+  local trajectory = flight.calculate(cannon.entity.surface, cannon.entity.position, surface, position)
+  if not trajectory then message(player, "no-route"); return nil end
 
   local id = storage.next_shot_id
   local shot = {
@@ -83,8 +82,9 @@ function firing.fire(player, cannon_id, surface, position)
     target_position = {x = position.x, y = position.y},
     player_index = player.index,
     fire_tick = game.tick,
-    impact_tick = game.tick + flight_ticks(cannon.entity.surface.index, surface.index),
+    impact_tick = game.tick + trajectory.flight_ticks,
   }
+  for key, value in pairs(trajectory) do shot[key] = value end
   foundation.loaded_shots = foundation.loaded_shots - 1
   resume_production(foundation)
   storage.next_shot_id = id + 1
@@ -92,9 +92,67 @@ function firing.fire(player, cannon_id, surface, position)
   local bucket = storage.shots_by_tick[shot.impact_tick] or {}
   bucket[#bucket + 1] = id
   storage.shots_by_tick[shot.impact_tick] = bucket
-  message(player, "shot-fired", id, cannon_id, position.x, position.y, foundation.loaded_shots,
-    surface.name, (shot.impact_tick - shot.fire_tick) / 60)
+  countdown.update(shot, game.tick)
+  message(player, "shot-fired-eta", {"interplanetary-artillery." .. shot.flight_type},
+    string.format("%.1f", shot.flight_ticks / 60))
   return id
+end
+
+function firing.fire_auto(player, surface, position)
+  firing.init()
+  if not surface or not surface.valid then message(player, "invalid-surface"); return nil end
+  if not valid_position(surface, position) then message(player, "invalid-target"); return nil end
+  if not impact_chunks_generated(surface, position) then message(player, "ungenerated-target"); return nil end
+  local local_ids, remote_ids = {}, {}
+  local ready_without_route = false
+  for id in pairs(storage.cannons) do
+    local foundation, cannon = source(player, id)
+    if foundation and (foundation.loaded_shots or 0) >= 1 then
+      if cannon.entity.surface.index == surface.index then
+        local_ids[#local_ids + 1] = id
+      elseif flight.calculate(cannon.entity.surface, cannon.entity.position, surface, position) then
+        remote_ids[#remote_ids + 1] = id
+      else
+        ready_without_route = true
+      end
+    end
+  end
+  local ids = #local_ids > 0 and local_ids or remote_ids
+  if #ids == 0 then
+    message(player, ready_without_route and "no-route" or "no-ready-cannon")
+    return nil
+  end
+  table.sort(ids)
+  local key = surface.index .. (#local_ids > 0 and ":local" or ":remote")
+  local rotations = storage.firing_round_robin[player.force.index] or {}
+  local last, selected = rotations[key] or 0, ids[1]
+  for _, id in ipairs(ids) do if id > last then selected = id; break end end
+  local shot_id = firing.fire(player, selected, surface, position)
+  if shot_id then
+    rotations[key] = selected
+    storage.firing_round_robin[player.force.index] = rotations
+  end
+  return shot_id
+end
+
+function firing.cancel(id)
+  local shot = storage.in_flight_shots[id]
+  if not shot then return end
+  countdown.remove(shot)
+  storage.in_flight_shots[id] = nil
+  message(game.get_player(shot.player_index), "shot-cancelled", id)
+end
+
+local function migrate_shots()
+  firing.init()
+  for _, shot in pairs(storage.in_flight_shots) do
+    shot.flight_type = shot.flight_type or (shot.source_surface_index == shot.target_surface_index
+      and "same-surface" or "interplanetary")
+    shot.flight_ticks = shot.flight_ticks or shot.impact_tick - shot.fire_tick
+    countdown.remove(shot)
+    if shot.impact_tick ~= game.tick and not countdown.update(shot, game.tick) then firing.cancel(shot.id) end
+  end
+  storage.firing_schema = 1
 end
 
 local function impact(shot)
@@ -119,14 +177,23 @@ local function impact(shot)
 end
 
 local function on_tick(event)
+  if storage.firing_schema ~= 1 then migrate_shots() end
   local bucket = storage.shots_by_tick and storage.shots_by_tick[event.tick]
-  if not bucket then return end
   storage.shots_by_tick[event.tick] = nil
-  for _, id in ipairs(bucket) do
+  for _, id in ipairs(bucket or {}) do
     local shot = storage.in_flight_shots[id]
     -- Remove before damage can raise other mods' handlers and cause reentry.
     storage.in_flight_shots[id] = nil
-    if shot then impact(shot) end
+    if shot then countdown.remove(shot); impact(shot) end
+  end
+  local updates = storage.countdown_by_tick[event.tick]
+  storage.countdown_by_tick[event.tick] = nil
+  for id in pairs(updates or {}) do
+    local shot = storage.in_flight_shots[id]
+    if shot then
+      shot.countdown_tick = nil
+      if not countdown.update(shot, event.tick) then firing.cancel(id) end
+    end
   end
 end
 
@@ -149,7 +216,7 @@ local function selected_area(event)
   firing.init()
   local player = game.get_player(event.player_index)
   local area = event.area
-  firing.fire(player, storage.player_cannon_targets[player.index], event.surface, {
+  firing.fire_auto(player, event.surface, {
     x = (area.left_top.x + area.right_bottom.x) / 2,
     y = (area.left_top.y + area.right_bottom.y) / 2,
   })
@@ -158,9 +225,12 @@ end
 local function cancel_surface(event)
   for id, shot in pairs(storage.in_flight_shots or {}) do
     if shot.target_surface_index == event.surface_index then
-      storage.in_flight_shots[id] = nil
-      message(game.get_player(shot.player_index), "shot-cancelled", id)
+      firing.cancel(id)
     end
+  end
+  for _, rotations in pairs(storage.firing_round_robin or {}) do
+    rotations[event.surface_index .. ":local"] = nil
+    rotations[event.surface_index .. ":remote"] = nil
   end
 end
 
@@ -176,8 +246,13 @@ function firing.register(resume)
   script.on_event(defines.events.on_pre_surface_deleted, cancel_surface)
   script.on_event(defines.events.on_pre_surface_cleared, cancel_surface)
   script.on_event(defines.events.on_forces_merging, function(event)
+    storage.firing_round_robin = {}
     for _, shot in pairs(storage.in_flight_shots or {}) do
-      if shot.source_force_index == event.source.index then shot.source_force_index = event.destination.index end
+      if shot.source_force_index == event.source.index then
+        shot.source_force_index = event.destination.index
+        if shot.countdown and shot.countdown.valid then shot.countdown.forces = {event.destination} end
+        if shot.countdown_map and shot.countdown_map.valid then shot.countdown_map.forces = {event.destination} end
+      end
     end
   end)
   commands.add_command("monolith-fire-test", {"interplanetary-artillery.fire-command"}, function(command)

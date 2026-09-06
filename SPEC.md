@@ -21,7 +21,7 @@ The weapon is not intended to be a direct replacement or simple upgrade for vani
 
 ## 2. Current Development Stage
 
-The current goal is **Prototype Stage 5 - Targeting Remote UX Validation**.
+The current goal is **Automatic firing, route-based flight and impact countdown**.
 
 Do not implement the complete interplanetary artillery system yet.
 
@@ -53,9 +53,9 @@ mouse UX was reported to lose its cursor when entering map/remote view; the
 inter-surface shot architecture itself remains validated. The first candidate
 was a vanilla-derived artillery-remote capsule with a dedicated flare/category.
 The decision below replaces that candidate without duplicating firing.
-Control + Shift + F will register the hovered source only. Source registration
-is independent of the cursor: Q clears the cursor, not the registered source.
-The next explicit source registration replaces the player-specific source.
+Control + Shift + F registers a source for explicit debug commands only.
+Normal shortcut targeting automatically selects a ready Cannon; it ignores
+manual registration. Q and view changes do not affect automatic selection.
 All clicks must use the existing firing validation and shot architecture.
 
 Stage 5 decision: user testing confirmed the native no-artillery-in-range
@@ -65,7 +65,7 @@ supplies target surface and rectangle center to the existing firing path.
 No dedicated flare, ammo category, native artillery action or tick scan is used.
 The old hidden tool remains a save-compatible alias, not a second UX.
 Actual remote-view mouse operation and automatic cursor carryover remain
-unverified; reacquiring the tool through the shortcut preserves the source.
+unverified; reacquiring the tool through the shortcut needs no manual source.
 
 ---
 
@@ -414,15 +414,19 @@ Exact range is not yet specified.
 
 #### Validated Firing Architecture (Stages 3 and 4)
 
-* Hover a Cannon and press Control + Shift + F to register the firing source.
-  The Cannon has higher selection priority than the Foundation at the mount.
+* Normal targeting requires no source registration. Scan registered Cannons
+  only on firing requests, validating entities, reciprocal attachment, same
+  force and loaded_shots >= 1. Prefer ready Cannons on the target surface.
+  Only when none exist, consider other surfaces with valid planetary routes.
+* Within the selected group, sort unit numbers and choose the first greater
+  than the last successful selection, wrapping at the end. Persist the last ID
+  per force, target surface and local/remote group in storage.firing_round_robin.
+  Rejections do not advance rotation; invalid/empty Cannons are skipped.
+  Force merges reset rotation; surface removal clears its target-group state.
 * A cursor-only selection tool selects a ground point (or the center of a
   dragged rectangle). Each completed selection requests one shot.
-* The source Cannon unit number is stored per player. Selection never silently
-  substitutes another Cannon. Surface/controller changes and passive cursor
-  changes retain this ID. Q clears only the cursor, not the source ID.
-  The aim key registers a hovered Cannon only. The shortcut equips the remote
-  without replacing the source, including after moving to another view.
+* Manual source registration is retained per player solely for debug commands
+  and focused explicit-source tests, never for shortcut target selection.
 * `/monolith-fire-test x y` targets coordinates using that explicitly selected
   Cannon; `/monolith-shot-status` reports its identity and owned in-flight shots.
 * Validate live Cannon and Foundation, reciprocal attachment, matching position,
@@ -436,9 +440,18 @@ Exact range is not yet specified.
 * All chunks touched by the radius-6 impact footprint must already be generated.
   Ungenerated targets are rejected without ammunition loss. Stage 4 does not
   request chunk generation, avoiding map-generation stalls and distant expansion.
-* On acceptance consume exactly one loaded shot, resume production, allocate
-  a monotonically increasing shot ID and schedule impact 300 ticks later for
-  same-surface shots, or 900 ticks later for different surfaces.
+* Classify every new shot as same-surface or interplanetary. Same-surface shots
+  need no planet and use Euclidean distance at 300 tiles/s, rounded upward to
+  whole ticks with a minimum of 6 ticks. Interplanetary shots require both
+  surfaces to belong to valid planets and a finite shortest connection path.
+  Use the bidirectional space-connection graph (including intermediate space
+  locations), with positive finite lengths in km, computed on request by
+  Dijkstra. No unlock/visit requirement is added. Missing routes or non-planet
+  endpoints reject without ammunition consumption. Speed is 500 km/s, rounding
+  upward to ticks (minimum 1); surface tile distance is not added.
+* Consume one shot, resume production and persist flight_type, flight_ticks,
+  distance_tiles or route_distance_km alongside existing source/target state.
+  Notify firing type and ETA to one decimal place.
 * Persist source Cannon/Foundation IDs, source force index, source/target surface
   indices and copied positions, player index, fire_tick and impact_tick in
   `storage.in_flight_shots[id]`. No live source entity is needed for impact.
@@ -453,7 +466,20 @@ Exact range is not yet specified.
   cancels the shot with notification and no refund. Force merging transfers
   attribution to the destination force. Missing source force cancels safely.
 
-All delay, radius and damage values are test constants, not final balance.
+Speeds above are the current specified values; radius and damage remain test values.
+
+Each shot owns a localized rendering text at its target, visible to its source
+force in game and map render modes, with zoom-independent screen size. Update
+every 60 ticks while remaining time is at least 600 ticks, every 6 ticks below
+that boundary (schedule the boundary transition precisely). Store render objects
+and a countdown_by_tick schedule; each tick only looks up the due buckets.
+Destroy text on impact/cancellation/invalid destination and remove its scheduled
+update. Multiple shots have independent objects, even at identical coordinates;
+overlapping labels are acceptable for this placeholder, not a final GUI.
+Save/load preserves objects and buckets. One-time state migration adds displays
+to legacy shots, classifies them and preserves their original impact deadlines;
+legacy missing route distances remain unknown rather than fabricated. Already
+fired legacy non-planet shots are grandfathered. Force merges retarget visibility.
 
 ### 9.3 Interplanetary Fire
 
@@ -465,10 +491,10 @@ architecture. No separate planetary shot table is introduced.
 
 The targeting tool uses `on_player_selected_area.surface` and `.area` as the
 destination, never the Cannon surface or the character's physical surface.
-The intended operation is to select the source, enter remote view, switch
+The intended operation is to equip the shortcut remote, enter remote view, switch
 surface, and select ground. Native remote-view cursor carryover and mouse input
 remain explicit in-game verification items; re-equipping through the shortcut
-uses the retained source. The mod does not unlock or open remote surfaces itself.
+does not require a source. The mod does not unlock or open remote surfaces itself.
 
 `/monolith-fire-surface-test <surface-name-or-index> <x> <y>` uses the explicitly
 selected Cannon and the ordinary firing path. The surface must already exist.
@@ -670,7 +696,7 @@ Stonehenge is an inspiration, not the identity of this mod.
 
 ## 13. Prototype Test Scope
 
-Stages 1 through 3 establish the following foundation; preserve them in Stage 5:
+Stages 1 through 3 establish the following foundation; preserve these behaviors:
 
 ### Test A — Foundation tile
 
@@ -709,30 +735,31 @@ Do not implement the full ammunition system merely to complete Test F.
 ### Test G - Same-surface firing
 
 Validate source selection, zero-ammo refusal, two successive shots, exact
-300-tick impacts, damage filtering, production resumption, save/load in flight,
+distance-based impacts, damage filtering, production resumption, save/load in flight,
 source removal in flight, and generated uncharted distant targets.
 
 ---
 
 ### Test H - Inter-surface firing
 
-Validate different destination surfaces, 900-tick impact, simultaneous local
+Validate planetary destination surfaces, route-based impact, simultaneous local
 and remote shots, persistence of surface/position/deadline through save/load,
 source removal, source surface removal, target deletion/clearing, unchanged
 production resumption, uncharted targets and ungenerated rejection. Test a real
-Space Age planet when available and separate test surfaces with base only.
+Space Age planet when available; with base only, test local fire and rejection
+of non-planet inter-surface fire.
 
-Stage 5 adds shortcut-equipped target input, per-player source retention and
-event-surface routing tests. Native mouse/view operation must be distinguished
-from automated firing validation; see STAGE5-VALIDATION.md for remaining checks.
+Current focused tests cover automatic priority/rotation, route eligibility and
+distance, countdown cadence/cleanup, save/load and production resumption.
+Native mouse/view appearance must be distinguished from automated validation.
 
-## 14. Explicitly Out of Scope for Stage 5
+## 14. Explicitly Out of Scope
 
 Do not implement these systems unless separately requested:
 
 * final planet targeting UX and GUI;
 * visible inter-surface projectile travel;
-* planet distance balance and orbital mechanics;
+* final speed balancing and orbital mechanics (current speeds are specified above);
 * enemy auto-targeting;
 * custom target-selection GUI;
 * ammunition balance;

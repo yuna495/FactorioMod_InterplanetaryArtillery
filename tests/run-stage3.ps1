@@ -1,7 +1,7 @@
 param(
   [string]$Factorio = 'D:\Games\steam\steamapps\common\Factorio\bin\x64\Factorio.exe',
   [switch]$SpaceAge,
-  [ValidateSet(3, 4)][int]$Stage = 3
+  [ValidateSet(3, 4, 6)][int]$Stage = 3
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -16,7 +16,7 @@ foreach ($file in @('info.json', 'data.lua', 'control.lua', 'scripts', 'locale',
   Copy-Item -LiteralPath (Join-Path $repo $file) -Destination $mod -Recurse
 }
 Move-Item -LiteralPath (Join-Path $mod 'control.lua') -Destination (Join-Path $mod 'production-control.lua')
-$bootstrap = if ($Stage -eq 4) { 'bootstrap-stage4.lua' } else { 'bootstrap.lua' }
+$bootstrap = if ($Stage -ge 4) { "bootstrap-stage$Stage.lua" } else { 'bootstrap.lua' }
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot $bootstrap) -Destination (Join-Path $mod 'control.lua')
 $data = Join-Path (Split-Path (Split-Path (Split-Path $Factorio -Parent) -Parent) -Parent) 'data'
 $config = Join-Path $run 'config.ini'
