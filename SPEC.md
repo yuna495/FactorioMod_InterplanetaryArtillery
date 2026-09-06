@@ -352,7 +352,16 @@ The implemented Stage 2 test loop is retained:
 * a hidden test recipe produces `interplanetary-artillery-test-shell`;
 * the output item is converted into a `storage`-backed `loaded_shots` count;
 * `loaded_shots` is capped at 2;
-* production stops while the cap is reached;
+* the dedicated recipe is fixed and always retained, including at capacity;
+* at capacity, set disabled_by_script=true, preserving input inventory and
+  in-progress crafting. No recipe removal, progress reset or ingredient spill;
+* after consuming a shot, restore the pre-pause script-disabled value and
+  resume production monitoring. Other causes of inactivity remain respected;
+* persist production_paused and previous_disabled_by_script on each Foundation
+  record. A one-time migration reapplies the policy to existing full Foundations;
+* the existing 60-tick monitor converts completed products and pauses production.
+  A partially started next craft may be retained, but no further craft completes
+  while full. The fixed test recipe takes far longer than the monitor interval;
 * `/monolith-consume-test-shot` consumes one loaded test shot and allows
   production to resume.
 
@@ -460,7 +469,8 @@ Exact range is not yet specified.
 * Impact creates base `big-explosion` and deals 250 explosion damage in radius 6
   to other non-neutral forces that are neither friends nor cease-fire partners
   of the source force at impact time. Self/allied/neutral entities are excluded.
-  Ordinary damage resistances apply. No terrain destruction or chart reveal.
+  Ordinary damage resistances apply. No terrain destruction. Only interplanetary
+  impacts additionally chart the local area as specified below.
 * Fired shots survive source mining/destruction and save/load with original
   deadlines. Target surface deletion/clearing or loss of generated impact chunks
   cancels the shot with notification and no refund. Force merging transfers
@@ -480,6 +490,41 @@ Save/load preserves objects and buckets. One-time state migration adds displays
 to legacy shots, classifies them and preserves their original impact deadlines;
 legacy missing route distances remain unknown rather than fabricated. Already
 fired legacy non-planet shots are grandfathered. Force merges retarget visibility.
+
+#### Visual Projectiles and Impact Observation
+
+Same-surface shots create an independent artillery-projectile visual using base
+shell, shadow and chart-picture assets. It has no action/final_action, but uses
+native reveal_map=true for vanilla-style flight-path observation. Native chart
+requests were verified in 2.0.77 headless tests; actual Map/Remote View appearance
+still needs client confirmation. No Lua flight-path polling or generation calls
+are added. This is distinct from interplanetary impact-only reveal.
+Speed is distance_tiles/flight_ticks (at most 5 tiles/tick), matching
+the rounded 300 tiles/s flight with the minimum flight-time rule.
+Native position quantization may cause small visual timing differences
+(within 3 ticks in the 6000-tile test). Zero-distance
+visuals may disappear immediately. The shot state, not projectile arrival, owns
+all damage, explosion and impact timing. Save/load retains the entity reference;
+losing a visual never cancels a shot. Impact/cancel removes any surviving visual.
+Legacy in-flight shots need not gain a reconstructed flying visual.
+
+Interplanetary shots have no travelling source-side entity. At accepted impact,
+spawn a dedicated harmless impact visual (reveal_map=false) one tile north of the target, moving toward it
+over approximately 3 ticks. This is a brief near-vertical visual cue, not a 3D
+descent simulation. Store its entity and surface in visual_cleanup_by_tick and
+remove it after 3 ticks or earlier on target surface delete/clear. Queues and
+entities persist through saves; only the current cleanup bucket is checked.
+
+Interplanetary impact charts only generated chunks whose offsets from the target
+chunk satisfy dx^2+dy^2 <= 2^2 (13 chunks maximum). Radius 2 chunks is provisional.
+Chart each included chunk explicitly for the source force, producing a coarse
+circular footprint with no flight-path reveal, no generation requests and no
+continuous radar observation. Missing surrounding chunks stay ungenerated.
+Short-lived native reveal_map probes at the target did not demonstrate completed
+charting in headless 2.0.77. Explicit chart requests make the impact footprint
+independent of native reveal radius and projectile lifetime. Chart requests may
+remain pending in headless tests; requested footprint and completed chart are
+distinct verification results.
 
 ### 9.3 Interplanetary Fire
 
@@ -767,7 +812,8 @@ Do not implement these systems unless separately requested:
 * capacitor charging;
 * cooling;
 * crater generation;
-* map reveal;
+* additional map reveal beyond native same-surface projectile observation and
+  the local interplanetary impact footprint;
 * reconnaissance;
 * custom firing effects;
 * recoil animation;

@@ -1,6 +1,7 @@
 local firing = {}
 local flight = require("scripts.flight")
 local countdown = require("scripts.countdown")
+local visuals = require("scripts.shot-visuals")
 local TOOL = "interplanetary-artillery-targeting-remote"
 local LEGACY_TOOL = "interplanetary-artillery-target"
 local CANNON = "interplanetary-artillery-cannon"
@@ -16,6 +17,7 @@ function firing.init()
   storage.player_cannon_targets = storage.player_cannon_targets or {}
   storage.firing_round_robin = storage.firing_round_robin or {}
   storage.countdown_by_tick = storage.countdown_by_tick or {}
+  storage.visual_cleanup_by_tick = storage.visual_cleanup_by_tick or {}
 end
 
 local function message(player, key, ...)
@@ -93,6 +95,7 @@ function firing.fire(player, cannon_id, surface, position)
   bucket[#bucket + 1] = id
   storage.shots_by_tick[shot.impact_tick] = bucket
   countdown.update(shot, game.tick)
+  visuals.launch(shot)
   message(player, "shot-fired-eta", {"interplanetary-artillery." .. shot.flight_type},
     string.format("%.1f", shot.flight_ticks / 60))
   return id
@@ -139,6 +142,7 @@ function firing.cancel(id)
   local shot = storage.in_flight_shots[id]
   if not shot then return end
   countdown.remove(shot)
+  visuals.remove(shot)
   storage.in_flight_shots[id] = nil
   message(game.get_player(shot.player_index), "shot-cancelled", id)
 end
@@ -163,6 +167,7 @@ local function impact(shot)
     message(player, "shot-cancelled", shot.id)
     return
   end
+  visuals.impact(shot, surface, force)
   surface.create_entity{name = "big-explosion", position = shot.target_position}
   for _, entity in pairs(surface.find_entities_filtered{position = shot.target_position, radius = IMPACT_RADIUS}) do
     if entity.valid and entity.health and entity.destructible then
@@ -177,6 +182,8 @@ local function impact(shot)
 end
 
 local function on_tick(event)
+  storage.visual_cleanup_by_tick = storage.visual_cleanup_by_tick or {}
+  visuals.on_tick(event.tick)
   if storage.firing_schema ~= 1 then migrate_shots() end
   local bucket = storage.shots_by_tick and storage.shots_by_tick[event.tick]
   storage.shots_by_tick[event.tick] = nil
@@ -184,7 +191,7 @@ local function on_tick(event)
     local shot = storage.in_flight_shots[id]
     -- Remove before damage can raise other mods' handlers and cause reentry.
     storage.in_flight_shots[id] = nil
-    if shot then countdown.remove(shot); impact(shot) end
+    if shot then countdown.remove(shot); visuals.remove(shot); impact(shot) end
   end
   local updates = storage.countdown_by_tick[event.tick]
   storage.countdown_by_tick[event.tick] = nil
@@ -223,6 +230,7 @@ local function selected_area(event)
 end
 
 local function cancel_surface(event)
+  visuals.clear_surface(event.surface_index)
   for id, shot in pairs(storage.in_flight_shots or {}) do
     if shot.target_surface_index == event.surface_index then
       firing.cancel(id)

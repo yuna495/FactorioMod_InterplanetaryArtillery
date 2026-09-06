@@ -1,7 +1,7 @@
 param(
   [string]$Factorio = 'D:\Games\steam\steamapps\common\Factorio\bin\x64\Factorio.exe',
   [switch]$SpaceAge,
-  [ValidateSet(3, 4, 6)][int]$Stage = 3
+  [ValidateSet(3, 4, 6, 7)][int]$Stage = 3
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -18,6 +18,9 @@ foreach ($file in @('info.json', 'data.lua', 'control.lua', 'scripts', 'locale',
 Move-Item -LiteralPath (Join-Path $mod 'control.lua') -Destination (Join-Path $mod 'production-control.lua')
 $bootstrap = if ($Stage -ge 4) { "bootstrap-stage$Stage.lua" } else { 'bootstrap.lua' }
 Copy-Item -LiteralPath (Join-Path $PSScriptRoot $bootstrap) -Destination (Join-Path $mod 'control.lua')
+if ($Stage -eq 7) {
+  Copy-Item -LiteralPath (Join-Path $PSScriptRoot 'visual-prototypes.lua') -Destination (Join-Path $mod 'data-final-fixes.lua')
+}
 $data = Join-Path (Split-Path (Split-Path (Split-Path $Factorio -Parent) -Parent) -Parent) 'data'
 $config = Join-Path $run 'config.ini'
 function Invoke-TestFactorio([string[]]$Arguments, [string]$LogPath) {
@@ -68,7 +71,8 @@ $serverSettings | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $settings -
 foreach ($phase in @('initial', 'reload')) {
   $log = Join-Path $run ($phase + '.log')
   if ($phase -eq 'reload') { $save = Join-Path $run "saves/stage$Stage-flight.zip" }
-  Invoke-TestFactorio -Arguments @('--config', $config, '--mod-directory', $mods, '--start-server', $save, '--server-settings', $settings, '--bind', '127.0.0.1:34987', '--until-tick', '4000') -LogPath $log
+  $untilTick = if ($Stage -eq 7) { '10000' } else { '4000' }
+  Invoke-TestFactorio -Arguments @('--config', $config, '--mod-directory', $mods, '--start-server', $save, '--server-settings', $settings, '--bind', '127.0.0.1:34987', '--until-tick', $untilTick) -LogPath $log
   if (-not (Select-String -LiteralPath $log -Pattern "STAGE$Stage ALL PASSED" -Quiet)) {
     throw "Stage $phase failed: $log"
   }

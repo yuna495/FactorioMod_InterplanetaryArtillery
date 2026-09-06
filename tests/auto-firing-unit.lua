@@ -16,7 +16,7 @@ local function surface(index, planet)
     create_entity = function() end, find_entities_filtered = function() return {} end}
 end
 local a,b,c,editor = surface(1,"a"),surface(2,"b"),surface(3,"c"),surface(4)
-local force = {index = 1}
+local force = {index = 1, chart = function() end}
 local player = {valid = true, index = 1, force = force, surface = editor,
   print = function(v) notices[#notices + 1] = v end}
 game = {tick = 0, surfaces = {a,b,c,editor}, forces = {force}, get_player = function() return player end}

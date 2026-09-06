@@ -11,6 +11,16 @@ local cannon_collision_layer = "interplanetary_artillery_cannon"
 local foundation_recipe_category = "interplanetary-artillery-foundation"
 local test_shell_name = "interplanetary-artillery-test-shell"
 
+local projectile = table.deepcopy(data.raw["artillery-projectile"]["artillery-projectile"])
+projectile.name = "interplanetary-artillery-projectile"
+projectile.action = nil
+projectile.final_action = nil
+projectile.reveal_map = true
+local impact_projectile = table.deepcopy(projectile)
+impact_projectile.name = "interplanetary-artillery-impact-projectile"
+impact_projectile.reveal_map = false
+data:extend({projectile, impact_projectile})
+
 -- Native artillery-remote actions require an eligible artillery weapon.
 local remote = {
   type = "selection-tool",
@@ -209,6 +219,7 @@ data:extend({
     damaged_trigger_effect = hit_effects.entity(),
     impact_category = "metal-large",
     crafting_categories = {foundation_recipe_category},
+    fixed_recipe = test_shell_name,
     crafting_speed = 1,
     energy_source = {
       type = "electric",

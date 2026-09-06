@@ -71,45 +71,26 @@ local function get_cannon(unit_number)
   return nil
 end
 
-local function spill_item_counts(entity, items)
-  if not valid(entity) or not items then return end
-
-  for _, item in pairs(items) do
-    if item.name and item.count and item.count > 0 then
-      local stack = {name = item.name, count = item.count}
-      if item.quality then
-        stack.quality = item.quality
-      end
-
-      entity.surface.spill_item_stack{
-        position = entity.position,
-        stack = stack,
-        force = entity.force,
-        allow_belts = false,
-      }
-    end
-  end
-end
-
 local function set_foundation_recipe(record)
   if not record or not valid(record.entity) then return end
-
-  if (record.loaded_shots or 0) >= MAX_LOADED_SHOTS then
-    local recipe = record.entity.get_recipe()
-    if recipe then
-      local removed_items = record.entity.set_recipe(nil)
-      spill_item_counts(record.entity, removed_items)
-    end
-    record.entity.crafting_progress = 0
-    storage.active_foundations[record.entity.unit_number] = nil
-    return
-  end
-
   local recipe = record.entity.get_recipe()
   if not recipe or recipe.name ~= TEST_SHELL_NAME then
     record.entity.set_recipe(TEST_SHELL_NAME)
   end
-
+  if (record.loaded_shots or 0) >= MAX_LOADED_SHOTS then
+    if not record.production_paused then
+      record.previous_disabled_by_script = record.entity.disabled_by_script
+      record.production_paused = true
+    end
+    record.entity.disabled_by_script = true
+    storage.active_foundations[record.entity.unit_number] = nil
+    return
+  end
+  if record.production_paused then
+    record.entity.disabled_by_script = record.previous_disabled_by_script or false
+    record.production_paused = nil
+    record.previous_disabled_by_script = nil
+  end
   storage.active_foundations[record.entity.unit_number] = true
 end
 
@@ -299,10 +280,7 @@ local function register_cannon(entity, player_index)
 end
 
 local function rebuild_storage()
-  local previous_loaded_shots = {}
-  for unit_number, record in pairs(storage.foundations or {}) do
-    previous_loaded_shots[unit_number] = record.loaded_shots or 0
-  end
+  local previous_records = storage.foundations or {}
 
   storage.foundations = {}
   storage.cannons = {}
@@ -315,7 +293,10 @@ local function rebuild_storage()
       register_foundation(foundation)
       local record = storage.foundations[foundation.unit_number]
       if record then
-        record.loaded_shots = previous_loaded_shots[foundation.unit_number] or 0
+        local previous = previous_records[foundation.unit_number] or {}
+        record.loaded_shots = previous.loaded_shots or 0
+        record.production_paused = previous.production_paused
+        record.previous_disabled_by_script = previous.previous_disabled_by_script
         set_foundation_recipe(record)
       end
     end
@@ -353,7 +334,10 @@ end
 
 local function monitor_foundation_outputs()
   ensure_storage()
-
+  if storage.production_schema ~= 1 then
+    for _, record in pairs(storage.foundations) do set_foundation_recipe(record) end
+    storage.production_schema = 1
+  end
   for unit_number in pairs(storage.active_foundations) do
     local record = get_foundation(unit_number)
     if record then
