@@ -300,7 +300,8 @@ local placement = {
   picture = {}, render_layer = "higher-object-above",
 }
 for name, direction in pairs({north = 0, west = 6, south = 12, east = 18}) do
-  placement.picture[name] = monolith_graphics.sprite(monolith_graphics.upper_path(direction, 0))
+  placement.picture[name] = direction == 18 and monolith_graphics.east_placement()
+    or monolith_graphics.sprite(monolith_graphics.upper_path(direction, 0))
 end
 data:extend({placement})
 for elevation = 0, 4 do

@@ -1,7 +1,7 @@
 local visuals = require("scripts.cannon-visuals")
 local aiming = {
-  TRAVERSE_STEP_TICKS = 12,
-  ELEVATION_STEP_TICKS = 30,
+  TRAVERSE_STEP_TICKS = 24,
+  ELEVATION_STEP_TICKS = 60,
   AIM_SETTLE_TICKS = 60,
 }
 

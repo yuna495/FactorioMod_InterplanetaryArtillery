@@ -11,8 +11,16 @@ function graphics.upper_name(direction, elevation)
   return string.format("interplanetary-artillery-upper-%s-%02d", graphics.elevations[elevation + 1], direction)
 end
 function graphics.upper_path(direction, elevation)
+  direction = direction > 12 and 24 - direction or direction
   local label = graphics.elevations[elevation + 1]
   return root .. string.format("upper/%s/monolith-upper-%s-%02d.png", label, label, direction)
+end
+function graphics.upper_x_scale(direction)
+  return direction > 12 and -1 or 1
+end
+-- Native placement pictures cannot use LuaRendering's negative x_scale.
+function graphics.east_placement()
+  return graphics.sprite(root .. "upper/low/monolith-upper-low-18.png")
 end
 function graphics.sprite(filename)
   return {filename = filename, width = graphics.size, height = graphics.size,
@@ -21,6 +29,8 @@ function graphics.sprite(filename)
              (graphics.size / 2 - graphics.anchor[2]) * graphics.scale / 32}}
 end
 function graphics.foundation()
-  return graphics.sprite(root .. "foundation/monolith-foundation.png")
+  local sprite = graphics.sprite(root .. "foundation/monolith-foundation.png")
+  sprite.shift[2] = (graphics.size / 2 - 491.5) * graphics.scale / 32
+  return sprite
 end
 return graphics

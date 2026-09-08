@@ -16,3 +16,27 @@ for _,c in ipairs({{6,0},{299,0},{300,1},{599,1},{600,2},{899,2},{900,3},{1199,3
 end
 assert(visuals.elevation{flight_type="interplanetary",flight_ticks=1}==4)
 print('CANNON VISUAL MATH PASSED')
+
+local graphics = require('scripts.monolith-graphics')
+rendering = {draw_sprite = function(args)
+  args.valid=true; args.destroy=function() args.valid=false end; return args
+end}
+local record={entity={valid=true,surface={},direction=0},visual={direction_index=18,elevation_index=2}}
+storage={cannons={[1]=record},cannon_visual_schema=1}
+record.visual.render=rendering.draw_sprite{sprite=graphics.upper_name(18,2),x_scale=1}
+local old=record.visual.render
+visuals.migrate()
+assert(storage.cannon_visual_schema==2 and old==record.visual.render and old.x_scale==-1)
+for e=0,4 do for d=0,23 do
+  record.visual.direction_index=d;record.visual.elevation_index=e
+  visuals.ensure(record)
+  assert(old.sprite==graphics.upper_name(d,e))
+  assert(old.x_scale==(d>12 and -1 or 1))
+  local source=d>12 and 24-d or d
+  assert(graphics.upper_path(d,e)==graphics.upper_path(source,e))
+  local path=graphics.upper_path(d,e):gsub('__InterplanetaryArtillery__/','')
+  local file=assert(io.open(path,'rb'),path);file:close()
+end end
+assert(graphics.east_placement().filename:match('low%-18.png$'))
+assert(graphics.foundation().shift[2]==(384-491.5)*graphics.scale/32)
+print('MIRROR MAPPING, ASSET REFERENCES AND SAVED VISUAL MIGRATION PASSED')

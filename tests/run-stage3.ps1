@@ -75,7 +75,8 @@ foreach ($phase in @('initial', 'reload')) {
     $save = Join-Path $run "saves/stage$Stage-flight.zip"
     if ($Reconfigure) {
       $testInfo = Get-Content -LiteralPath (Join-Path $mod 'info.json') -Raw | ConvertFrom-Json
-      $testInfo.version = '1.0.1'
+      $parts = $testInfo.version.Split('.')
+      $testInfo.version = "$($parts[0]).$($parts[1]).$([int]$parts[2]+1)"
       $testInfo | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $mod 'info.json') -Encoding UTF8
     }
   }

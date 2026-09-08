@@ -538,9 +538,9 @@ The two-shot magazine is not decremented or otherwise reserved during aiming:
 one busy reservation per Cannon prevents competing firing requests.
 
 Use the existing 24 counterclockwise sprite directions and distance-based five
-elevations. Move one direction index every 12 ticks by the shortest wrapped path;
+elevations. Move one direction index every 24 ticks by the shortest wrapped path;
 an exact 180-degree tie uses increasing indices. After horizontal alignment,
-move one elevation index every 30 ticks until aligned. Skip already-matched
+move one elevation index every 60 ticks until aligned. Skip already-matched
 phases. Always hold the aligned pose for 60 ticks before firing. These provisional
 constants live together in `scripts/aiming.lua`. Update the sprite only when its
 pose changes, retaining the final pose after firing or cancellation.
@@ -765,6 +765,22 @@ directions and five elevations, drawn together above the existing Cannon with
 the export's shared scale and origin. Direction 00 faces screen north, indices
 increase counterclockwise: 06 west, 12 south, 18 east. Elevation indices 0–4
 mean low, low-mid, mid, high-mid, high.
+
+Runtime directions 13–23 reuse PNGs 11–01 respectively with LuaRendering
+`x_scale = -1`; directions 00–12 use `x_scale = 1`. Keep all 24 sprite prototype
+names as aliases for save compatibility, but store only directions 00–12 per
+elevation. Retain one additional low/18 PNG for the native east-facing placement
+preview, whose Sprite definition has no runtime x_scale. This is 66 Upper PNGs
+instead of 120. Baked lighting is mirrored as well; that visual tradeoff is accepted.
+Visual schema 2 refreshes saved render objects' sign without changing their pose.
+
+Foundation's PNG is vertically fitted to approximately 15 tiles of visible height,
+centered on its 15x15 selection area, while retaining its existing horizontal size.
+This is an image-space vertical correction only: the Upper Assembly, collision,
+dedicated tile requirement and entity positions are unchanged. Its own image anchor
+is independent of the Upper export origin. `prepare_monolith_graphics.py` preserves
+the original Foundation export in art/blender and applies this fit reproducibly;
+it also prunes runtime mirrored PNGs and updates the manifest. Run it after exports.
 
 Each Cannon record stores its direction/elevation and persistent LuaRenderObject
 in `visual`. Save/load retains these; configuration rebuilds preserve the state,

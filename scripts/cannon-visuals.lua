@@ -30,10 +30,13 @@ function visuals.ensure(record, direction)
   local state = record.visual or {direction_index = visuals.initial_direction(direction or record.entity.direction), elevation_index = 0}
   record.visual = state
   local sprite = graphics.upper_name(state.direction_index, state.elevation_index)
+  local x_scale = graphics.upper_x_scale(state.direction_index)
   if state.render and state.render.valid then
     state.render.sprite = sprite
+    state.render.x_scale = x_scale
   else
     state.render = rendering.draw_sprite{sprite = sprite, target = {entity = record.entity},
+      x_scale = x_scale,
       surface = record.entity.surface, render_layer = "higher-object-above", render_mode = "game"}
   end
 end
@@ -47,9 +50,9 @@ function visuals.aim(record, shot)
 end
 
 function visuals.migrate()
-  if storage.cannon_visual_schema == 1 then return end
+  if storage.cannon_visual_schema == 2 then return end
   for _, record in pairs(storage.cannons or {}) do visuals.ensure(record) end
-  storage.cannon_visual_schema = 1
+  storage.cannon_visual_schema = 2
 end
 
 return visuals
