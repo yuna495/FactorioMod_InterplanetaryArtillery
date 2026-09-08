@@ -9,6 +9,7 @@ rendering = {draw_text = function(args)
   args.destroy = function() args.valid = false end
   return args
 end}
+rendering.draw_sprite = rendering.draw_text
 local function surface(index, planet)
   return {index = index, name = tostring(index), valid = true,
     planet = planet and {name = planet, valid = true}, map_gen_settings = {},
@@ -42,9 +43,17 @@ end
 cannon(1,a); cannon(2,a); cannon(3,a); cannon(4,b)
 local event={item="interplanetary-artillery-targeting-remote",player_index=1,surface=a,
   area={left_top={x=6000,y=0},right_bottom={x=6000,y=0}}}
+local function advance_until(tick)
+  for t=game.tick+1,tick do game.tick=t;handlers.on_tick{tick=t} end
+end
+local function complete_aim(id)
+  while storage.aiming_cannons[id] do advance_until(storage.aiming_cannons[id].next_aim_tick) end
+end
 for i,expected in ipairs({1,2,3,1,2,3,4,4}) do
   player.index=i%2+1 -- Players on the same force share deterministic rotation.
   handlers.on_player_selected_area(event)
+  assert(storage.aiming_cannons[expected] and not storage.in_flight_shots[i])
+  complete_aim(expected)
   local shot=storage.in_flight_shots[i]
   assert(shot.cannon_unit_number==expected)
   assert(shot.flight_type==(expected==4 and "interplanetary" or "same-surface"))
@@ -56,6 +65,7 @@ handlers.on_player_selected_area(event)
 assert(storage.next_shot_id==9 and notices[#notices][1]=="interplanetary-artillery.no-ready-cannon")
 storage.foundations[2].loaded_shots=1
 handlers.on_player_selected_area(event)
+complete_aim(2)
 assert(storage.in_flight_shots[9].cannon_unit_number==2)
 storage.foundations[1].loaded_shots=1
 storage.cannons[1].entity.valid=false
@@ -75,37 +85,40 @@ local entity=storage.foundations[1].entity
 storage.foundations[1].entity={valid=false}
 assert(not firing.fire_auto(player,a,{x=6000,y=0}))
 storage.foundations[1].entity=entity
-assert(notices[1][1]=="interplanetary-artillery.shot-fired-eta")
-local shot=storage.in_flight_shots[1]
-assert(shot.countdown_tick==60)
-for tick=1,600 do game.tick=tick; handlers.on_tick{tick=tick} end
-assert(shot.countdown.text[2]=="10" and shot.countdown_tick==606)
-for tick=601,606 do game.tick=tick; handlers.on_tick{tick=tick} end
-assert(shot.countdown.text[2]=="9.9" and shot.countdown_tick==612)
+assert(notices[1][1]=="interplanetary-artillery.aim-started")
+local shot=storage.in_flight_shots[9]
+local started=shot.fire_tick
+assert(shot.countdown_tick==started+60)
+advance_until(started+600)
+assert(shot.countdown.text[2]=="10" and shot.countdown_tick==started+606)
+advance_until(started+606)
+assert(shot.countdown.text[2]=="9.9" and shot.countdown_tick==started+612)
 local obj=shot.countdown
-firing.cancel(1)
-assert(not obj.valid and not storage.in_flight_shots[1])
-local other=storage.in_flight_shots[2].countdown
-for tick=607,1800 do game.tick=tick; handlers.on_tick{tick=tick} end
-assert(not other.valid and not next(storage.in_flight_shots) and not next(storage.countdown_by_tick))
+firing.cancel(9)
+assert(not obj.valid and not storage.in_flight_shots[9])
+advance_until(started+1800)
+assert(not next(storage.in_flight_shots) and not next(storage.countdown_by_tick))
 storage.foundations[1].loaded_shots=2
-local deleted=firing.fire_auto(player,a,{x=6000,y=0})
+local deleted=storage.next_shot_id
+complete_aim(firing.fire_auto(player,a,{x=6000,y=0}))
 local deleted_render=storage.in_flight_shots[deleted].countdown
 handlers.on_pre_surface_deleted{surface_index=1}
 assert(not deleted_render.valid and not next(storage.countdown_by_tick))
-local cleared=firing.fire_auto(player,a,{x=6000,y=0})
+local cleared=storage.next_shot_id
+complete_aim(firing.fire_auto(player,a,{x=6000,y=0}))
 local cleared_render=storage.in_flight_shots[cleared].countdown_map
 handlers.on_pre_surface_cleared{surface_index=1}
 assert(not cleared_render.valid and not next(storage.countdown_by_tick))
 -- Upgrade a legacy shot without changing its accepted deadline or requiring its source.
+local legacy_tick=game.tick
 storage.in_flight_shots[99]={id=99,source_surface_index=4,target_surface_index=1,
-  source_force_index=1,target_position={x=6000,y=0},fire_tick=1700,impact_tick=1900,player_index=1}
-storage.shots_by_tick[1900]={99}
+  source_force_index=1,target_position={x=6000,y=0},fire_tick=legacy_tick-100,impact_tick=legacy_tick+100,player_index=1}
+storage.shots_by_tick[legacy_tick+100]={99}
 storage.firing_schema=nil
-game.tick=1801; handlers.on_tick{tick=1801}
+advance_until(legacy_tick+1)
 assert(storage.in_flight_shots[99].flight_type=="interplanetary")
 assert(storage.in_flight_shots[99].flight_ticks==200 and storage.in_flight_shots[99].countdown.valid)
-for tick=1802,1900 do game.tick=tick; handlers.on_tick{tick=tick} end
+advance_until(legacy_tick+100)
 assert(not next(storage.in_flight_shots) and not next(storage.countdown_by_tick))
 -- Explicit debug commands retain the same parser and source isolation.
 local real_fire=firing.fire

@@ -5,6 +5,7 @@ local tile_sounds = require("__base__.prototypes.tile.tile-sounds")
 local tile_trigger_effects = require("__base__.prototypes.tile.tile-trigger-effects")
 local tile_graphics = require("__base__.prototypes.tile.tile-graphics")
 local tile_collision_masks = require("__base__.prototypes.tile.tile-collision-masks")
+local monolith_graphics = require("scripts.monolith-graphics")
 
 local foundation_tile_layer = "interplanetary_artillery_foundation_tile"
 local cannon_collision_layer = "interplanetary_artillery_cannon"
@@ -231,27 +232,7 @@ data:extend({
     close_sound = sounds.machine_close,
     allowed_effects = {},
     graphics_set = {
-      animation = {
-        layers = {
-          {
-            filename = "__base__/graphics/entity/rocket-silo/06-rocket-silo.png",
-            priority = "extra-high",
-            width = 608,
-            height = 596,
-            shift = util.by_pixel(3, -1),
-            scale = 0.9,
-          },
-          {
-            filename = "__base__/graphics/entity/rocket-silo/00-rocket-silo-shadow.png",
-            priority = "medium",
-            width = 612,
-            height = 578,
-            draw_as_shadow = true,
-            shift = util.by_pixel(7, 2),
-            scale = 0.9,
-          },
-        },
-      },
+      animation = monolith_graphics.foundation(),
     },
   },
   {
@@ -264,7 +245,7 @@ data:extend({
     pick_sound = item_sounds.turret_inventory_pickup,
     drop_sound = item_sounds.turret_inventory_move,
     stack_size = 5,
-    place_result = "interplanetary-artillery-cannon",
+    place_result = "interplanetary-artillery-cannon-placement",
   },
   {
     type = "recipe",
@@ -282,6 +263,7 @@ data:extend({
   {
     type = "container",
     name = "interplanetary-artillery-cannon",
+    placeable_by = {item = "interplanetary-artillery-cannon", count = 1},
     icon = "__base__/graphics/icons/artillery-turret.png",
     flags = {"placeable-player", "player-creation"},
     order = "z[interplanetary-artillery]-b[cannon]",
@@ -301,12 +283,31 @@ data:extend({
     damaged_trigger_effect = hit_effects.entity(),
     impact_category = "metal-large",
     picture = {
-      filename = "__base__/graphics/entity/artillery-turret/artillery-turret-base.png",
-      priority = "extra-high",
-      width = 207,
-      height = 199,
-      shift = util.by_pixel(0, 3),
-      scale = 0.5,
+      filename = "__core__/graphics/empty.png", width = 1, height = 1,
     },
   },
 })
+
+-- A transient 4-way placement preview; the runtime entity stays a container.
+local cannon = data.raw.container["interplanetary-artillery-cannon"]
+local placement = {
+  type = "simple-entity-with-owner", name = "interplanetary-artillery-cannon-placement",
+  localised_name = {"entity-name.interplanetary-artillery-cannon"},
+  icon = cannon.icon, flags = {"placeable-player", "player-creation"},
+  minable = table.deepcopy(cannon.minable), max_health = cannon.max_health,
+  collision_box = table.deepcopy(cannon.collision_box), selection_box = table.deepcopy(cannon.selection_box),
+  collision_mask = table.deepcopy(cannon.collision_mask), tile_width = 3, tile_height = 3,
+  picture = {}, render_layer = "higher-object-above",
+}
+for name, direction in pairs({north = 0, west = 6, south = 12, east = 18}) do
+  placement.picture[name] = monolith_graphics.sprite(monolith_graphics.upper_path(direction, 0))
+end
+data:extend({placement})
+for elevation = 0, 4 do
+  for direction = 0, 23 do
+    local sprite = monolith_graphics.sprite(monolith_graphics.upper_path(direction, elevation))
+    sprite.type = "sprite"
+    sprite.name = monolith_graphics.upper_name(direction, elevation)
+    data:extend({sprite})
+  end
+end

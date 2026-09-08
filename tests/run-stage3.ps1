@@ -1,7 +1,8 @@
 param(
   [string]$Factorio = 'D:\Games\steam\steamapps\common\Factorio\bin\x64\Factorio.exe',
   [switch]$SpaceAge,
-  [ValidateSet(3, 4, 6, 7)][int]$Stage = 3
+  [switch]$Reconfigure,
+  [ValidateSet(3, 4, 6, 7, 8, 9)][int]$Stage = 3
 )
 $ErrorActionPreference = 'Stop'
 $repo = Split-Path $PSScriptRoot -Parent
@@ -12,7 +13,7 @@ New-Item -ItemType Directory -Path $mod -Force | Out-Null
 foreach ($directory in @('saves', 'script-output', 'temp', 'scenarios', 'campaigns', 'archive', 'config')) {
   New-Item -ItemType Directory -Path (Join-Path $run $directory) -Force | Out-Null
 }
-foreach ($file in @('info.json', 'data.lua', 'control.lua', 'scripts', 'locale', 'tests')) {
+foreach ($file in @('info.json', 'data.lua', 'control.lua', 'scripts', 'locale', 'tests', 'graphics')) {
   Copy-Item -LiteralPath (Join-Path $repo $file) -Destination $mod -Recurse
 }
 Move-Item -LiteralPath (Join-Path $mod 'control.lua') -Destination (Join-Path $mod 'production-control.lua')
@@ -70,7 +71,14 @@ foreach ($property in $overrides.PSObject.Properties) { $serverSettings.($proper
 $serverSettings | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $settings -Encoding UTF8
 foreach ($phase in @('initial', 'reload')) {
   $log = Join-Path $run ($phase + '.log')
-  if ($phase -eq 'reload') { $save = Join-Path $run "saves/stage$Stage-flight.zip" }
+  if ($phase -eq 'reload') {
+    $save = Join-Path $run "saves/stage$Stage-flight.zip"
+    if ($Reconfigure) {
+      $testInfo = Get-Content -LiteralPath (Join-Path $mod 'info.json') -Raw | ConvertFrom-Json
+      $testInfo.version = '1.0.1'
+      $testInfo | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath (Join-Path $mod 'info.json') -Encoding UTF8
+    }
+  }
   $untilTick = if ($Stage -eq 7) { '10000' } else { '4000' }
   Invoke-TestFactorio -Arguments @('--config', $config, '--mod-directory', $mods, '--start-server', $save, '--server-settings', $settings, '--bind', '127.0.0.1:34987', '--until-tick', $untilTick) -LogPath $log
   if (-not (Select-String -LiteralPath $log -Pattern "STAGE$Stage ALL PASSED" -Quiet)) {

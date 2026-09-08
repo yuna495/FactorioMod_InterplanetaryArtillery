@@ -21,7 +21,7 @@ The weapon is not intended to be a direct replacement or simple upgrade for vani
 
 ## 2. Current Development Stage
 
-The current goal is **Automatic firing, route-based flight and impact countdown**.
+The current goal is **Automatic Cannon selection, pre-fire aiming, route-based flight and impact countdown**.
 
 Do not implement the complete interplanetary artillery system yet.
 
@@ -425,12 +425,13 @@ Exact range is not yet specified.
 
 * Normal targeting requires no source registration. Scan registered Cannons
   only on firing requests, validating entities, reciprocal attachment, same
-  force and loaded_shots >= 1. Prefer ready Cannons on the target surface.
+  force, no active aiming reservation and loaded_shots >= 1. Prefer ready Cannons on the target surface.
   Only when none exist, consider other surfaces with valid planetary routes.
 * Within the selected group, sort unit numbers and choose the first greater
   than the last successful selection, wrapping at the end. Persist the last ID
   per force, target surface and local/remote group in storage.firing_round_robin.
-  Rejections do not advance rotation; invalid/empty Cannons are skipped.
+  Accepted aiming reservations advance rotation; rejections do not.
+  Invalid, empty and busy Cannons are skipped.
   Force merges reset rotation; surface removal clears its target-group state.
 * A cursor-only selection tool selects a ground point (or the center of a
   dragged rectangle). Each completed selection requests one shot.
@@ -525,6 +526,44 @@ charting in headless 2.0.77. Explicit chart requests make the impact footprint
 independent of native reveal radius and projectile lifetime. Chart requests may
 remain pending in headless tests; requested footprint and completed chart are
 distinct verification results.
+
+#### Pre-fire Aiming Sequence
+
+Target selection does not immediately fire. A Cannon follows READY → TRAVERSING
+→ ELEVATING → SETTLING → FIRE → READY. `storage.aiming_cannons[cannon_id]`
+holds the reserved target surface/position, fixed target direction/elevation,
+source identity, requesting player, flight type, aim_state and next_aim_tick.
+Absence of a reservation means READY; a busy Cannon cannot accept another target.
+The two-shot magazine is not decremented or otherwise reserved during aiming:
+one busy reservation per Cannon prevents competing firing requests.
+
+Use the existing 24 counterclockwise sprite directions and distance-based five
+elevations. Move one direction index every 12 ticks by the shortest wrapped path;
+an exact 180-degree tie uses increasing indices. After horizontal alignment,
+move one elevation index every 30 ticks until aligned. Skip already-matched
+phases. Always hold the aligned pose for 60 ticks before firing. These provisional
+constants live together in `scripts/aiming.lua`. Update the sprite only when its
+pose changes, retaining the final pose after firing or cancellation.
+
+Schedule only due Cannons using `storage.aim_actions_by_tick[next_tick]`; process
+same-tick Cannon IDs in numeric order. Reservations, sprites and deadlines
+persist across save/load and configuration rebuilds, without on_load mutation
+or an every-tick scan. A firing request returns a Cannon reservation receipt,
+not a future shot ID; shot IDs are allocated only at actual FIRE.
+
+At FIRE revalidate source/Foundation attachment, original source location and
+force, target surface and generated impact footprint, route and ammunition.
+Only then consume ammunition, resume production, create the in-flight shot,
+set fire_tick to the current tick and impact_tick to current tick + flight_ticks,
+and launch the existing projectile/countdown. Aiming creates no flight countdown,
+projectile or impact job. Existing in-flight shots retain their deadlines.
+
+Cannon/Foundation removal cancels its aim and scheduled action immediately.
+Source or target surface clear/delete cancels affected reservations before index
+reuse. Other invalid sources are cancelled at their next scheduled update;
+failed final validation cancels without consuming ammunition. The Cannon becomes
+READY, keeping its current pose. Force merging transfers the reserved force;
+player disconnection does not prevent the valid reserved Cannon from finishing.
 
 ### 9.3 Interplanetary Fire
 
@@ -719,6 +758,40 @@ First inspect Foundation and six representative Upper previews, then export the
 full 1 + 120 images. Effects, recoil, sprite sheets and prototype integration are
 outside this pipeline's current scope.
 
+### 11.5 In-game Monolith Sprites
+
+Foundation uses one fixed sprite. Upper Assembly (Turret plus Barrel) uses 24
+directions and five elevations, drawn together above the existing Cannon with
+the export's shared scale and origin. Direction 00 faces screen north, indices
+increase counterclockwise: 06 west, 12 south, 18 east. Elevation indices 0–4
+mean low, low-mid, mid, high-mid, high.
+
+Each Cannon record stores its direction/elevation and persistent LuaRenderObject
+in `visual`. Save/load retains these; configuration rebuilds preserve the state,
+legacy Cannons initialize north/low, and removal destroys the owned visual.
+No per-tick redraw or full Cannon scan is needed after one-time migration.
+
+Placement starts at low elevation and snaps the build direction to four cardinal
+directions. Since the 2.0 container cannot provide a rotatable placement preview,
+the Cannon item places a temporary `interplanetary-artillery-cannon-placement`
+simple-entity-with-owner with four directional pictures. The build handler reads
+its direction and immediately replaces it with the original container Cannon.
+The original inventory, collision, selection and attachment rules remain intact.
+Robot and raised script builds of the placement entity follow the same path;
+legacy container ghosts/direct script builds without direction default north.
+
+An accepted aiming reservation fixes the destination pose for the sequence in
+section 9.2. Quantize the source-to-target vector to the nearest counterclockwise 15-degree
+sector, retaining the last direction for a zero-length vector. Interplanetary
+fire uses the target surface coordinates relative to source coordinates for this
+visual-only heading and always uses high elevation. Same-surface elevation uses
+the existing flight_ticks: low below 300 ticks, low-mid below 600, mid below 900,
+high-mid below 1200, high otherwise (5-second bands at 300 tiles/s). Keep the last
+shot pose afterward. Flight speeds, selection priorities, magazine capacity,
+damage, power and reveal rules remain unchanged. Flight/countdown timing begins at actual FIRE, after
+the discrete aiming sequence. Continuous interpolation and firing effects remain
+out of scope.
+
 ---
 
 ## 12. Naming
@@ -835,7 +908,7 @@ Do not implement these systems unless separately requested:
 * reconnaissance;
 * custom firing effects;
 * recoil animation;
-* elevation animation;
+* continuous elevation interpolation (discrete pre-fire aiming is implemented);
 * final graphics;
 * sound design;
 * eight-gun coordination;

@@ -5,6 +5,8 @@ local TEST_SHELL_NAME = "interplanetary-artillery-test-shell"
 local MAX_LOADED_SHOTS = 2
 local MONITOR_INTERVAL_TICKS = 60
 local firing = require("scripts.firing")
+local cannon_visuals = require("scripts.cannon-visuals")
+local PLACEMENT_NAME = "interplanetary-artillery-cannon-placement"
 
 local function ensure_storage()
   storage.foundations = storage.foundations or {}
@@ -152,8 +154,10 @@ local function reject_built_entity(entity, item_name, player_index)
 end
 
 local function cleanup_cannon(cannon_unit_number)
+  firing.cancel_aim(cannon_unit_number)
   local cannon = storage.cannons[cannon_unit_number]
   if not cannon then return end
+  cannon_visuals.remove(cannon)
 
   local foundation = get_foundation(cannon.foundation_unit_number)
   if foundation and foundation.cannon_unit_number == cannon_unit_number then
@@ -226,8 +230,10 @@ local function cleanup_foundation(foundation_unit_number, options)
   unprotect_foundation_tiles(foundation)
 
   if foundation.cannon_unit_number then
+    firing.cancel_aim(foundation.cannon_unit_number)
     local cannon = get_cannon(foundation.cannon_unit_number)
     if cannon then
+      cannon_visuals.remove(cannon)
       storage.cannons[cannon.entity.unit_number] = nil
       mine_or_destroy_attached_cannon(cannon, options)
     end
@@ -251,7 +257,7 @@ local function register_foundation(entity)
   set_foundation_recipe(storage.foundations[entity.unit_number])
 end
 
-local function register_cannon(entity, player_index)
+local function register_cannon(entity, player_index, direction, previous_visual)
   if not valid(entity) or entity.name ~= CANNON_NAME or not entity.unit_number then return end
 
   local foundation = find_foundation_at_mount(entity)
@@ -276,11 +282,14 @@ local function register_cannon(entity, player_index)
     entity = entity,
     foundation_unit_number = foundation.unit_number,
     object_registration = register_object(entity, "cannon"),
+    visual = previous_visual,
   }
+  cannon_visuals.ensure(storage.cannons[entity.unit_number], direction)
 end
 
 local function rebuild_storage()
   local previous_records = storage.foundations or {}
+  local previous_cannons = storage.cannons or {}
 
   storage.foundations = {}
   storage.cannons = {}
@@ -304,7 +313,14 @@ local function rebuild_storage()
 
   for _, surface in pairs(game.surfaces) do
     for _, cannon in pairs(surface.find_entities_filtered{name = CANNON_NAME}) do
-      register_cannon(cannon)
+      local previous = previous_cannons[cannon.unit_number]
+      register_cannon(cannon, nil, nil, previous and previous.visual)
+    end
+  end
+  for id, previous in pairs(previous_cannons) do
+    if not storage.cannons[id] then
+      firing.cancel_aim(id)
+      cannon_visuals.remove(previous)
     end
   end
 end
@@ -499,6 +515,20 @@ local function on_entity_built(event)
   local entity = event.entity or event.created_entity
   if not valid(entity) then return end
 
+  if entity.name == PLACEMENT_NAME then
+    local direction = entity.direction
+    local surface, position, force, quality = entity.surface, entity.position, entity.force, entity.quality
+    if not find_foundation_at_mount(entity) then
+      reject_built_entity(entity, CANNON_NAME, event.player_index)
+      return
+    end
+    entity.destroy()
+    entity = surface.create_entity{name = CANNON_NAME, position = position, force = force, quality = quality}
+    assert(entity, "Monolith placement could not create its Cannon")
+    register_cannon(entity, event.player_index, direction)
+    return
+  end
+
   if entity.name == FOUNDATION_NAME then
     register_foundation(entity)
   elseif entity.name == CANNON_NAME then
@@ -600,7 +630,8 @@ local function register_event(event_id, handler, filters)
   end
 end
 
-local built_filters = {{filter = "name", name = FOUNDATION_NAME}, {filter = "name", name = CANNON_NAME}}
+local built_filters = {{filter = "name", name = FOUNDATION_NAME}, {filter = "name", name = CANNON_NAME},
+  {filter = "name", name = PLACEMENT_NAME}}
 local removed_filters = {{filter = "name", name = FOUNDATION_NAME}, {filter = "name", name = CANNON_NAME}}
 
 register_event(defines.events.on_built_entity, on_entity_built, built_filters)
