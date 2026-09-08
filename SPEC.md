@@ -701,6 +701,24 @@ For early testing:
 
 Gameplay architecture must be validated before final graphical production begins.
 
+### 11.4 Blender State and PNG Export Pipeline
+
+The current art pipeline uses `art/blender/monolith_v2_symmetry.blend` as its
+editable source and saves a separate `monolith_render.blend` with discrete
+timeline states. It does not change runtime graphics or gameplay.
+
+Export Foundation once, and export Turret plus Barrel together as Upper Assembly.
+The default state sequence is five elevation blocks (0, 15, 30, 45, 60 degrees),
+each containing 24 azimuth directions at 15-degree increments: frames 1–120.
+Direction zero points along model +Y; positive yaw rotates about +Z.
+Direction and elevation counts are configurable in `render_monolith.py`.
+
+Both outputs use one fixed orthographic camera, equal canvas size and transparent
+RGBA PNG backgrounds. Camera framing covers the union of all configured states.
+First inspect Foundation and six representative Upper previews, then export the
+full 1 + 120 images. Effects, recoil, sprite sheets and prototype integration are
+outside this pipeline's current scope.
+
 ---
 
 ## 12. Naming

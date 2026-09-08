@@ -1,0 +1,182 @@
+{
+  "source": "C:\\Users\\aki\\AppData\\Roaming\\Factorio\\mods\\InterplanetaryArtillery\\art\\blender\\monolith_v2_symmetry.blend",
+  "source_sha256": "6ec994c19c393cea7241e45da6ebd78c7fbe3a97c0064da37d7aef031fa1a300",
+  "direction_count": 24,
+  "elevations": [
+    [
+      "low",
+      0.0
+    ],
+    [
+      "low-mid",
+      15.0
+    ],
+    [
+      "mid",
+      30.0
+    ],
+    [
+      "high-mid",
+      45.0
+    ],
+    [
+      "high",
+      60.0
+    ]
+  ],
+  "frame_count": 120,
+  "camera": {
+    "location": [
+      0.0,
+      -113.48638916015625,
+      126.51361083984375
+    ],
+    "rotation": [
+      0.7853981852531433,
+      -0.0,
+      0.0
+    ],
+    "ortho_scale": 65.94560241699219
+  },
+  "resolution": 768,
+  "samples": 16,
+  "seed": 0,
+  "records": [
+    {
+      "frame": 1,
+      "path": "foundation/monolith-foundation.png",
+      "layer": "Foundation export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        294,
+        214,
+        473,
+        358
+      ],
+      "pixel_sha256": "e06aa61a1bb1e0128b702187e8c44eb8f860cb11fccccd87093135f540cb188b"
+    },
+    {
+      "frame": 1,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        585
+      ],
+      "pixel_sha256": "f55dc030ba5733865b344ebee0245b6792cf50584ea1e0e95834482ab1d3d726"
+    },
+    {
+      "frame": 49,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        670
+      ],
+      "pixel_sha256": "e792d176f11c6221b8f5bc4e3d35e1f4c610e986c0489e97dc87d518d8000b10"
+    },
+    {
+      "frame": 55,
+      "direction": 6,
+      "yaw_degrees": 90.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-06.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        82,
+        269,
+        426,
+        466
+      ],
+      "pixel_sha256": "60ba7bf9f45b76d75b3c78312ddbb7e6bcbdccaf2bf6c9a2d0048e1170f558de"
+    },
+    {
+      "frame": 61,
+      "direction": 12,
+      "yaw_degrees": 180.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-12.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        239,
+        423,
+        363
+      ],
+      "pixel_sha256": "111629f6d7b580dd2e3c96d6e2178952bf5bf3182e3b14cd1e7860a00bcc4f0b"
+    },
+    {
+      "frame": 67,
+      "direction": 18,
+      "yaw_degrees": 270.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-18.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        685,
+        466
+      ],
+      "pixel_sha256": "6d2c0e0b5b8a52b20c788350116149ef0ca295ee17244cede2d2392b51534df3"
+    },
+    {
+      "frame": 97,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        670
+      ],
+      "pixel_sha256": "58ca42094fb4984aee021f5720b294f76de6e48e2fef98a86069cdda841fddc0"
+    }
+  ]
+}

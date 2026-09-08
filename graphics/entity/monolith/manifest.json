@@ -1,0 +1,2468 @@
+{
+  "source": "C:\\Users\\aki\\AppData\\Roaming\\Factorio\\mods\\InterplanetaryArtillery\\art\\blender\\monolith_v2_symmetry.blend",
+  "source_sha256": "6ec994c19c393cea7241e45da6ebd78c7fbe3a97c0064da37d7aef031fa1a300",
+  "direction_count": 24,
+  "elevations": [
+    [
+      "low",
+      0.0
+    ],
+    [
+      "low-mid",
+      15.0
+    ],
+    [
+      "mid",
+      30.0
+    ],
+    [
+      "high-mid",
+      45.0
+    ],
+    [
+      "high",
+      60.0
+    ]
+  ],
+  "frame_count": 120,
+  "camera": {
+    "location": [
+      0.0,
+      -113.48638916015625,
+      126.51361083984375
+    ],
+    "rotation": [
+      0.7853981852531433,
+      -0.0,
+      0.0
+    ],
+    "ortho_scale": 65.94560241699219
+  },
+  "resolution": 768,
+  "samples": 16,
+  "seed": 0,
+  "records": [
+    {
+      "frame": 1,
+      "path": "foundation/monolith-foundation.png",
+      "layer": "Foundation export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        294,
+        214,
+        473,
+        358
+      ],
+      "pixel_sha256": "1b08bd49ca718f897e94e95fdd8111dfbd36282c25d0dab0145ede3e74e753a3"
+    },
+    {
+      "frame": 1,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        585
+      ],
+      "pixel_sha256": "40fdd97ed4b1bef411fe5f4f94d1a72c211613403880bae4d73d66133fc01d10"
+    },
+    {
+      "frame": 2,
+      "direction": 1,
+      "yaw_degrees": 15.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-01.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        286,
+        269,
+        428,
+        577
+      ],
+      "pixel_sha256": "9780d86b0c7769a8858b3ec620cccb90f3cd075231f0f013660d324d7cf4d954"
+    },
+    {
+      "frame": 3,
+      "direction": 2,
+      "yaw_degrees": 30.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-02.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        204,
+        266,
+        432,
+        553
+      ],
+      "pixel_sha256": "6633b0066012e8b07e9cea2da7d7fd77669132a16c66d2318b09f3bb6f83d5b9"
+    },
+    {
+      "frame": 4,
+      "direction": 3,
+      "yaw_degrees": 45.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-03.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        135,
+        265,
+        433,
+        515
+      ],
+      "pixel_sha256": "f04469c149f8152355ed411cec09fe91c0df25895ed4cf39d00578998b543fb3"
+    },
+    {
+      "frame": 5,
+      "direction": 4,
+      "yaw_degrees": 60.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-04.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        82,
+        266,
+        431,
+        466
+      ],
+      "pixel_sha256": "9aaf6def40b107a7925d16ed5d0d7dc7b3a7011c0fc3fc7ec694ee29ad95c2d7"
+    },
+    {
+      "frame": 6,
+      "direction": 5,
+      "yaw_degrees": 75.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-05.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        50,
+        269,
+        427,
+        409
+      ],
+      "pixel_sha256": "9ca057f24e3aa6c267638677a65b866ceabbeac8c95a11cdb13adc33d982a59b"
+    },
+    {
+      "frame": 7,
+      "direction": 6,
+      "yaw_degrees": 90.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-06.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        40,
+        269,
+        426,
+        370
+      ],
+      "pixel_sha256": "739dc11df9f73f654462e73a1264cc4dfce3637bfa07556fadadc06eb072fe86"
+    },
+    {
+      "frame": 8,
+      "direction": 7,
+      "yaw_degrees": 105.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-07.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        50,
+        264,
+        427,
+        369
+      ],
+      "pixel_sha256": "6e1aa39e29434f0d254cf187ef8f282abf0ef6acebdca1e3f1b8f2baad55650a"
+    },
+    {
+      "frame": 9,
+      "direction": 8,
+      "yaw_degrees": 120.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-08.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        82,
+        207,
+        431,
+        367
+      ],
+      "pixel_sha256": "ad726d1f7e1f738bf837d5aa2f0d27fb3b5d2a7281a7db568baaeab22193876b"
+    },
+    {
+      "frame": 10,
+      "direction": 9,
+      "yaw_degrees": 135.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-09.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        135,
+        157,
+        433,
+        370
+      ],
+      "pixel_sha256": "a16a5fe55244eeed560a36064b3585c6bce784671e3126fb5f42c8d8a1cc9f5f"
+    },
+    {
+      "frame": 11,
+      "direction": 10,
+      "yaw_degrees": 150.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-10.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        204,
+        119,
+        432,
+        374
+      ],
+      "pixel_sha256": "31ebfae5189767d7de9bf5a87d2d8923e9ed5815cec848fe2e6ee124fa3951eb"
+    },
+    {
+      "frame": 12,
+      "direction": 11,
+      "yaw_degrees": 165.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-11.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        286,
+        96,
+        428,
+        375
+      ],
+      "pixel_sha256": "fcf9769bf5e4c2f4cc4568b61897d4725c10e6f278f9acf55f2cd6bec594ec2d"
+    },
+    {
+      "frame": 13,
+      "direction": 12,
+      "yaw_degrees": 180.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-12.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        87,
+        423,
+        375
+      ],
+      "pixel_sha256": "c7a95bd48919bed696790979fd22e0ded80ec17fbe7e2eaaafd291c20b6c12c8"
+    },
+    {
+      "frame": 14,
+      "direction": 13,
+      "yaw_degrees": 195.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-13.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        96,
+        481,
+        376
+      ],
+      "pixel_sha256": "90626ca775313fb2df1c167fd23f89a5609ed65ed1e03350c797863107e80d0f"
+    },
+    {
+      "frame": 15,
+      "direction": 14,
+      "yaw_degrees": 210.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-14.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        119,
+        563,
+        374
+      ],
+      "pixel_sha256": "0d70ab18400d732c6a4823a367a47dd8e3337ddf746755c5ec17558deb61ca4e"
+    },
+    {
+      "frame": 16,
+      "direction": 15,
+      "yaw_degrees": 225.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-15.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        157,
+        632,
+        371
+      ],
+      "pixel_sha256": "04f1cf7aa5c77728e0d5b439c7403b84311cff7a66ed4584200e637bb77dd4de"
+    },
+    {
+      "frame": 17,
+      "direction": 16,
+      "yaw_degrees": 240.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-16.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        206,
+        685,
+        367
+      ],
+      "pixel_sha256": "7e761fcf313cc26640094fc6f9a55bf1fa5406529853e695e9abcdd453995765"
+    },
+    {
+      "frame": 18,
+      "direction": 17,
+      "yaw_degrees": 255.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-17.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        340,
+        264,
+        717,
+        369
+      ],
+      "pixel_sha256": "7d2eeb125c0fadd3888e9b07f8e6bb4548e7c64a008329661cf509c5aeba1e7f"
+    },
+    {
+      "frame": 19,
+      "direction": 18,
+      "yaw_degrees": 270.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-18.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        342,
+        269,
+        727,
+        370
+      ],
+      "pixel_sha256": "1d4d6a8a604ff851ba0268f25dd07b249c8e6d396798a2a7586ed12ed0a4fe7c"
+    },
+    {
+      "frame": 20,
+      "direction": 19,
+      "yaw_degrees": 285.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-19.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        340,
+        269,
+        717,
+        409
+      ],
+      "pixel_sha256": "bc14e49ae970210c5c1a47295b96a79f550e1b075dd1b45d14a623e5a44b2915"
+    },
+    {
+      "frame": 21,
+      "direction": 20,
+      "yaw_degrees": 300.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-20.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        685,
+        466
+      ],
+      "pixel_sha256": "4d38c1688613baa4627ff88ddfa019572da1bb2ac58a22eb375984d5ab1c62be"
+    },
+    {
+      "frame": 22,
+      "direction": 21,
+      "yaw_degrees": 315.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-21.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        632,
+        515
+      ],
+      "pixel_sha256": "359dd1b7b7c5660d33e62a6a82ec8e40b7e306ec82290a4f70e9c1a24b31c826"
+    },
+    {
+      "frame": 23,
+      "direction": 22,
+      "yaw_degrees": 330.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-22.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        563,
+        553
+      ],
+      "pixel_sha256": "f57b7867ae19f05162decc451569bee5f055ae523e8adf5039e4b52e5404f371"
+    },
+    {
+      "frame": 24,
+      "direction": 23,
+      "yaw_degrees": 345.0,
+      "elevation": "low",
+      "elevation_degrees": 0.0,
+      "path": "upper/low/monolith-upper-low-23.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        482,
+        577
+      ],
+      "pixel_sha256": "518dcfbfd9de9c1e0f3b9a3b50c65f75d5380dcf3f2278a1bd572787b893bc94"
+    },
+    {
+      "frame": 25,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        638
+      ],
+      "pixel_sha256": "3c08658e9f14afef39937f3fd09ee9e2796d70a20a945930cb91be2ffd890ee6"
+    },
+    {
+      "frame": 26,
+      "direction": 1,
+      "yaw_degrees": 15.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-01.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        289,
+        269,
+        428,
+        630
+      ],
+      "pixel_sha256": "5668394456308e714453bf4c227c44a4e099f6af9e90314ad640dd76cefbd053"
+    },
+    {
+      "frame": 27,
+      "direction": 2,
+      "yaw_degrees": 30.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-02.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        210,
+        266,
+        432,
+        608
+      ],
+      "pixel_sha256": "efa46ad03bd89866e75185e202f92e164a487fdce74836a0bf319525077ead87"
+    },
+    {
+      "frame": 28,
+      "direction": 3,
+      "yaw_degrees": 45.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-03.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        143,
+        265,
+        433,
+        571
+      ],
+      "pixel_sha256": "2ff6fbb08085ff38fa3d0d6c19abbb092b46b0a04379832270333b62418804ec"
+    },
+    {
+      "frame": 29,
+      "direction": 4,
+      "yaw_degrees": 60.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-04.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        92,
+        266,
+        431,
+        524
+      ],
+      "pixel_sha256": "9e17f96e5b81525b2f4ad7257901d2b2ad8f7c17c9fea92658633305dac09a04"
+    },
+    {
+      "frame": 30,
+      "direction": 5,
+      "yaw_degrees": 75.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-05.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        60,
+        269,
+        427,
+        469
+      ],
+      "pixel_sha256": "1206dca4fc6fdd3d2889a38949af3d5c58ac2cab7186c1d0b5d5e4a93bd9dc19"
+    },
+    {
+      "frame": 31,
+      "direction": 6,
+      "yaw_degrees": 90.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-06.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        50,
+        269,
+        427,
+        409
+      ],
+      "pixel_sha256": "7d515755d35f326d5d67b4169360bfa726cb20a01976a0c84c6645eb9c76cbc6"
+    },
+    {
+      "frame": 32,
+      "direction": 7,
+      "yaw_degrees": 105.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-07.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        60,
+        269,
+        427,
+        369
+      ],
+      "pixel_sha256": "209b511d4cce89a2b36d17d3bd67864d16984b4c58768e9540a5ba4671b2d70e"
+    },
+    {
+      "frame": 33,
+      "direction": 8,
+      "yaw_degrees": 120.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-08.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        92,
+        266,
+        431,
+        367
+      ],
+      "pixel_sha256": "31094166bb0b9a88682c735189a4c7dd126394e34c026a46a6bf634a73db53fa"
+    },
+    {
+      "frame": 34,
+      "direction": 9,
+      "yaw_degrees": 135.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-09.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        143,
+        224,
+        433,
+        365
+      ],
+      "pixel_sha256": "f9b86749311cd606efb278f3ea16a16fc9d4d8b0f290ed5316499606af605ba6"
+    },
+    {
+      "frame": 35,
+      "direction": 10,
+      "yaw_degrees": 150.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-10.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        210,
+        188,
+        432,
+        368
+      ],
+      "pixel_sha256": "c66ecccdfc60dab24e4ae6a16550a2e483ec9f1be562b7dbd62f7423785d9659"
+    },
+    {
+      "frame": 36,
+      "direction": 11,
+      "yaw_degrees": 165.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-11.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        289,
+        165,
+        428,
+        370
+      ],
+      "pixel_sha256": "efde909614359fecca387020b66ae4e384ae00de2f635be4b7b237541ba7a725"
+    },
+    {
+      "frame": 37,
+      "direction": 12,
+      "yaw_degrees": 180.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-12.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        157,
+        423,
+        371
+      ],
+      "pixel_sha256": "b9b94b0b5dff1d69a004f4cddb9711981b335629292291aec336a3c7c0254c40"
+    },
+    {
+      "frame": 38,
+      "direction": 13,
+      "yaw_degrees": 195.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-13.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        165,
+        478,
+        370
+      ],
+      "pixel_sha256": "4589c9ca72689a89a54eb59235d4e3a8362ba3b286c4357f1d59ec9629110b29"
+    },
+    {
+      "frame": 39,
+      "direction": 14,
+      "yaw_degrees": 210.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-14.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        188,
+        557,
+        368
+      ],
+      "pixel_sha256": "f08ad8cfd75b86e7b09c3f8d52e3e773615d6d48c21e1adb5d3d08778a21d066"
+    },
+    {
+      "frame": 40,
+      "direction": 15,
+      "yaw_degrees": 225.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-15.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        225,
+        624,
+        365
+      ],
+      "pixel_sha256": "ed4231e02f56adec64dd1799270559cea172f678257de77a7931de3186fdd97f"
+    },
+    {
+      "frame": 41,
+      "direction": 16,
+      "yaw_degrees": 240.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-16.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        675,
+        367
+      ],
+      "pixel_sha256": "7b77933288c51b98b370c9b36cb4abee37661f49a537b6053ea42d6d8741245e"
+    },
+    {
+      "frame": 42,
+      "direction": 17,
+      "yaw_degrees": 255.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-17.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        340,
+        269,
+        707,
+        369
+      ],
+      "pixel_sha256": "148ded7a8aebec626008d99805632a5929cf8c52aa039199530dde68c3c08d49"
+    },
+    {
+      "frame": 43,
+      "direction": 18,
+      "yaw_degrees": 270.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-18.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        340,
+        269,
+        717,
+        409
+      ],
+      "pixel_sha256": "672ac2a532d9c6d0b883613b2c12b05f83cf81621d8d687759e6b8d1abcf075b"
+    },
+    {
+      "frame": 44,
+      "direction": 19,
+      "yaw_degrees": 285.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-19.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        340,
+        269,
+        707,
+        468
+      ],
+      "pixel_sha256": "ea3fe6ae0a4445e1809cb09f452895211adad5e817fb79729da402592702f978"
+    },
+    {
+      "frame": 45,
+      "direction": 20,
+      "yaw_degrees": 300.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-20.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        675,
+        524
+      ],
+      "pixel_sha256": "58c005e84db8e3acd4b5f17f550d7335bd2b9ab57622ec6fcae241c79f6822a8"
+    },
+    {
+      "frame": 46,
+      "direction": 21,
+      "yaw_degrees": 315.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-21.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        624,
+        571
+      ],
+      "pixel_sha256": "13b4749db4f8d75d7c620157e5f0b0d1b7973e1de37ae7a76fa9410344c75595"
+    },
+    {
+      "frame": 47,
+      "direction": 22,
+      "yaw_degrees": 330.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-22.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        557,
+        607
+      ],
+      "pixel_sha256": "79d91892641850d8a5edee15ad6fb047e6c2aad09a729bbfa4a554176a2533d4"
+    },
+    {
+      "frame": 48,
+      "direction": 23,
+      "yaw_degrees": 345.0,
+      "elevation": "low-mid",
+      "elevation_degrees": 15.0,
+      "path": "upper/low-mid/monolith-upper-low-mid-23.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        479,
+        630
+      ],
+      "pixel_sha256": "7854a5349696a7452886075c68b296546466df84ed85e0a7e3d9014e9c64ed9d"
+    },
+    {
+      "frame": 49,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        670
+      ],
+      "pixel_sha256": "b6ba1f071c337d8647b6739a4c338208e084fe3cd23b0193f93482185869119a"
+    },
+    {
+      "frame": 50,
+      "direction": 1,
+      "yaw_degrees": 15.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-01.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        298,
+        269,
+        428,
+        664
+      ],
+      "pixel_sha256": "9a356cc0df4ee3c0deda089af1b069986ac76ff84ac2e5cf8cc3872eecc2934c"
+    },
+    {
+      "frame": 51,
+      "direction": 2,
+      "yaw_degrees": 30.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-02.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        227,
+        266,
+        432,
+        644
+      ],
+      "pixel_sha256": "57805139b4afa5dc64da2ca3ab563a43ea1da5a0f8d279f3f35395d278b17d7c"
+    },
+    {
+      "frame": 52,
+      "direction": 3,
+      "yaw_degrees": 45.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-03.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        167,
+        265,
+        433,
+        611
+      ],
+      "pixel_sha256": "893f87a70a7a4c240c5321661a3b6d65036b5673ac063890a62eb292805adf42"
+    },
+    {
+      "frame": 53,
+      "direction": 4,
+      "yaw_degrees": 60.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-04.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        121,
+        266,
+        431,
+        569
+      ],
+      "pixel_sha256": "bee33442d85899dd126efe4e26f3503cf8ca5c6078bacee225917992ea60162f"
+    },
+    {
+      "frame": 54,
+      "direction": 5,
+      "yaw_degrees": 75.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-05.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        92,
+        269,
+        426,
+        520
+      ],
+      "pixel_sha256": "180d97624887eac0859178be412d769281d36e1b9c3ec048e8791042c8ff332c"
+    },
+    {
+      "frame": 55,
+      "direction": 6,
+      "yaw_degrees": 90.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-06.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        82,
+        269,
+        426,
+        466
+      ],
+      "pixel_sha256": "60ba7bf9f45b76d75b3c78312ddbb7e6bcbdccaf2bf6c9a2d0048e1170f558de"
+    },
+    {
+      "frame": 56,
+      "direction": 7,
+      "yaw_degrees": 105.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-07.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        92,
+        269,
+        426,
+        413
+      ],
+      "pixel_sha256": "6ac47cd09985dd6946571924ebed08019b488c2e85f33f6c9a0bb0a3c6d15cc4"
+    },
+    {
+      "frame": 57,
+      "direction": 8,
+      "yaw_degrees": 120.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-08.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        120,
+        266,
+        431,
+        367
+      ],
+      "pixel_sha256": "a05f7bfe59f8f4b605787fad4b16b1e633a269a67d9f05d18a7b7677c85c7478"
+    },
+    {
+      "frame": 58,
+      "direction": 9,
+      "yaw_degrees": 135.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-09.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        167,
+        265,
+        433,
+        365
+      ],
+      "pixel_sha256": "43b0df7875666281d125d123aa5e706e132c219b9f6eb9a062bb966bd0e5bd7e"
+    },
+    {
+      "frame": 59,
+      "direction": 10,
+      "yaw_degrees": 150.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-10.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        227,
+        266,
+        432,
+        361
+      ],
+      "pixel_sha256": "ed1926985f9bfa7af8f582110413500becedd96717c6b522979b538b27abf517"
+    },
+    {
+      "frame": 60,
+      "direction": 11,
+      "yaw_degrees": 165.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-11.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        297,
+        245,
+        428,
+        362
+      ],
+      "pixel_sha256": "252d68d6c117cfe158d1a45016d56905b44d4a901f2b60a0f8f837b0b2cb9149"
+    },
+    {
+      "frame": 61,
+      "direction": 12,
+      "yaw_degrees": 180.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-12.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        239,
+        423,
+        363
+      ],
+      "pixel_sha256": "111629f6d7b580dd2e3c96d6e2178952bf5bf3182e3b14cd1e7860a00bcc4f0b"
+    },
+    {
+      "frame": 62,
+      "direction": 13,
+      "yaw_degrees": 195.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-13.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        246,
+        470,
+        362
+      ],
+      "pixel_sha256": "b828071c5754ea3f31b5b7a37badcd62afa40e0b68fd0f477f3cd3a29875131a"
+    },
+    {
+      "frame": 63,
+      "direction": 14,
+      "yaw_degrees": 210.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-14.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        540,
+        361
+      ],
+      "pixel_sha256": "2a8e323981cb06542b723870bf085987f6106fb921d204e8e5f784b785c4e681"
+    },
+    {
+      "frame": 64,
+      "direction": 15,
+      "yaw_degrees": 225.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-15.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        601,
+        365
+      ],
+      "pixel_sha256": "d10da25041c728181f44fb280e42e17a03ba4fbea7c4065376081a4563e2a2b7"
+    },
+    {
+      "frame": 65,
+      "direction": 16,
+      "yaw_degrees": 240.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-16.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        647,
+        367
+      ],
+      "pixel_sha256": "a348b6454ecabd84172f28680b15a70543b185f54d491d84eb9ef02d137b463a"
+    },
+    {
+      "frame": 66,
+      "direction": 17,
+      "yaw_degrees": 255.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-17.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        675,
+        413
+      ],
+      "pixel_sha256": "9a37586262e1104777f9eff4f07bc3eb7344e4783f576f964b2c44943e0454c6"
+    },
+    {
+      "frame": 67,
+      "direction": 18,
+      "yaw_degrees": 270.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-18.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        685,
+        466
+      ],
+      "pixel_sha256": "1db11ef7363a858475703dc287a2f5da75b68ecbb89b644d81e8c41729138f88"
+    },
+    {
+      "frame": 68,
+      "direction": 19,
+      "yaw_degrees": 285.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-19.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        675,
+        519
+      ],
+      "pixel_sha256": "1b1470d5590c68b2d4c12a022a2fc11fce1f64a80f6506b5c2fddf297cca10cc"
+    },
+    {
+      "frame": 69,
+      "direction": 20,
+      "yaw_degrees": 300.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-20.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        646,
+        569
+      ],
+      "pixel_sha256": "74541c2dccb049a1a939bfb7e128f1929c99433a0c558545777c30d75a7abc5a"
+    },
+    {
+      "frame": 70,
+      "direction": 21,
+      "yaw_degrees": 315.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-21.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        600,
+        611
+      ],
+      "pixel_sha256": "f48d4319b8216201c4de6e350e7c8bcc4bbe1a562a9d39f44ce895ea20e36504"
+    },
+    {
+      "frame": 71,
+      "direction": 22,
+      "yaw_degrees": 330.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-22.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        540,
+        643
+      ],
+      "pixel_sha256": "f809cd17a755c59aa61af22336270f7a6d4376a4bbb23703d7126700c99b0baf"
+    },
+    {
+      "frame": 72,
+      "direction": 23,
+      "yaw_degrees": 345.0,
+      "elevation": "mid",
+      "elevation_degrees": 30.0,
+      "path": "upper/mid/monolith-upper-mid-23.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        470,
+        663
+      ],
+      "pixel_sha256": "45e9a2c06da8631da8fdd38568b66fa6fa4335b51fc1a9a649cee7a82c44ebb1"
+    },
+    {
+      "frame": 73,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        680
+      ],
+      "pixel_sha256": "b25a9e3d097526f5cbf3f2c993fca32bc4eff268272b6275cb80e60b819681c5"
+    },
+    {
+      "frame": 74,
+      "direction": 1,
+      "yaw_degrees": 15.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-01.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        312,
+        269,
+        428,
+        675
+      ],
+      "pixel_sha256": "3c1d3ab88fdc7d1a82f9cd448c1b5249bb2d09824f39676521c6f5836d65ae65"
+    },
+    {
+      "frame": 75,
+      "direction": 2,
+      "yaw_degrees": 30.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-02.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        253,
+        266,
+        432,
+        659
+      ],
+      "pixel_sha256": "7e827f5f4f32223f7d6b63f110f544db8cfb43a603f9fb617a3803dbe2bcf5a4"
+    },
+    {
+      "frame": 76,
+      "direction": 3,
+      "yaw_degrees": 45.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-03.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        204,
+        265,
+        433,
+        633
+      ],
+      "pixel_sha256": "44d963978ce8f5d6d148f938c1f55d743d259cb54346a274a0393a676dba1849"
+    },
+    {
+      "frame": 77,
+      "direction": 4,
+      "yaw_degrees": 60.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-04.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        167,
+        266,
+        431,
+        599
+      ],
+      "pixel_sha256": "4aa578bb012489f354e545f90df4ad60157d74a5118d14a863c3c9a1ba827a36"
+    },
+    {
+      "frame": 78,
+      "direction": 5,
+      "yaw_degrees": 75.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-05.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        143,
+        269,
+        426,
+        559
+      ],
+      "pixel_sha256": "01f64faab7c85bdd8c4094ac5814f82271db24d2264f9ac91d9c114523fdb25b"
+    },
+    {
+      "frame": 79,
+      "direction": 6,
+      "yaw_degrees": 90.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-06.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        135,
+        269,
+        423,
+        515
+      ],
+      "pixel_sha256": "f356145b2e4e3507fbe5c812970d9fdde279551f02f9afe4f46f01575d8015c5"
+    },
+    {
+      "frame": 80,
+      "direction": 7,
+      "yaw_degrees": 105.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-07.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        143,
+        269,
+        426,
+        472
+      ],
+      "pixel_sha256": "19d58324ae839dc94e76f27c416af6d88f17b98d086421708cbbf56c0d98d68c"
+    },
+    {
+      "frame": 81,
+      "direction": 8,
+      "yaw_degrees": 120.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-08.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        166,
+        266,
+        431,
+        432
+      ],
+      "pixel_sha256": "4da9604ca4262d594e46cc51e54d3ec1f4122f1ef72359e04168e38db70c21db"
+    },
+    {
+      "frame": 82,
+      "direction": 9,
+      "yaw_degrees": 135.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-09.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        204,
+        265,
+        433,
+        397
+      ],
+      "pixel_sha256": "e954458c30fb0688ab816b8d06d41b4bacf9109bd629ec445a135e2522db7b13"
+    },
+    {
+      "frame": 83,
+      "direction": 10,
+      "yaw_degrees": 150.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-10.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        254,
+        266,
+        432,
+        370
+      ],
+      "pixel_sha256": "34a3b3d8a08214d5e730d39094f44d37abf23669154042d0b2f083f4790d765e"
+    },
+    {
+      "frame": 84,
+      "direction": 11,
+      "yaw_degrees": 165.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-11.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        312,
+        269,
+        428,
+        356
+      ],
+      "pixel_sha256": "af324fcdaab2a53e849f0070bda423324f77988908407ee57b5b73572a110ebd"
+    },
+    {
+      "frame": 85,
+      "direction": 12,
+      "yaw_degrees": 180.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-12.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        355
+      ],
+      "pixel_sha256": "5e78259657928e16c39a6362c39ce450ef1e7319928d9a9831fd37088acdf2b1"
+    },
+    {
+      "frame": 86,
+      "direction": 13,
+      "yaw_degrees": 195.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-13.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        456,
+        356
+      ],
+      "pixel_sha256": "c26e0ffbc51a9f349f224e6f559ab08b0b2cb9640f0007293ab61b964bc233f8"
+    },
+    {
+      "frame": 87,
+      "direction": 14,
+      "yaw_degrees": 210.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-14.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        513,
+        370
+      ],
+      "pixel_sha256": "2f94c0524b693a919294d7e6f28acb9672be9c3a2db32bf75c9776dedc72ff5e"
+    },
+    {
+      "frame": 88,
+      "direction": 15,
+      "yaw_degrees": 225.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-15.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        563,
+        397
+      ],
+      "pixel_sha256": "d24c569961887b887b34a36f7d6cf76c3e232a27a56d5e6dccdffd7d5fb24c27"
+    },
+    {
+      "frame": 89,
+      "direction": 16,
+      "yaw_degrees": 240.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-16.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        601,
+        432
+      ],
+      "pixel_sha256": "40abeb78c6a1ad3fc9392ff4e34bfecfdec49d278ead006b1c072bfbffb68e51"
+    },
+    {
+      "frame": 90,
+      "direction": 17,
+      "yaw_degrees": 255.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-17.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        624,
+        472
+      ],
+      "pixel_sha256": "1598dbaad2c775913b81ca60b71ef538fa44d49ff87cfdc08773b2dc3c701bd8"
+    },
+    {
+      "frame": 91,
+      "direction": 18,
+      "yaw_degrees": 270.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-18.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        632,
+        515
+      ],
+      "pixel_sha256": "86d02be1439f7916e6715a5e51e585c1c707db4f39e5e2bf595b3840de6f1fb2"
+    },
+    {
+      "frame": 92,
+      "direction": 19,
+      "yaw_degrees": 285.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-19.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        624,
+        559
+      ],
+      "pixel_sha256": "0adb2fd9a1573352ed1363ba335cec91fe1fbe48118f83b392a9c77a8538d40b"
+    },
+    {
+      "frame": 93,
+      "direction": 20,
+      "yaw_degrees": 300.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-20.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        600,
+        599
+      ],
+      "pixel_sha256": "b6bee18febe81e2c81abcafd1475647c8567e7e8205c879725daa885f0b65e45"
+    },
+    {
+      "frame": 94,
+      "direction": 21,
+      "yaw_degrees": 315.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-21.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        563,
+        634
+      ],
+      "pixel_sha256": "7f5b46b70170e5eb42cbb3cdf8fbd98754aedbe2921bd6034faf2b3fe8a92e6f"
+    },
+    {
+      "frame": 95,
+      "direction": 22,
+      "yaw_degrees": 330.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-22.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        514,
+        659
+      ],
+      "pixel_sha256": "0857227370cfd804d71e0b55daddcecfaba058076736d6710a552b04eb1c33e0"
+    },
+    {
+      "frame": 96,
+      "direction": 23,
+      "yaw_degrees": 345.0,
+      "elevation": "high-mid",
+      "elevation_degrees": 45.0,
+      "path": "upper/high-mid/monolith-upper-high-mid-23.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        455,
+        675
+      ],
+      "pixel_sha256": "a6eefc47a2de4679a860c5e4aa70963ea18c6abe9817b9d77cf963461407904b"
+    },
+    {
+      "frame": 97,
+      "direction": 0,
+      "yaw_degrees": 0.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-00.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        670
+      ],
+      "pixel_sha256": "ed8ca776a28a82ba5246d16d729ce7b39503f9107e613026a60dbd616f4171b1"
+    },
+    {
+      "frame": 98,
+      "direction": 1,
+      "yaw_degrees": 15.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-01.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        329,
+        269,
+        428,
+        666
+      ],
+      "pixel_sha256": "ec4388db988ac666b93154509b7d63bb7995166428d5a1ddbe321b4f5a9a1974"
+    },
+    {
+      "frame": 99,
+      "direction": 2,
+      "yaw_degrees": 30.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-02.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        288,
+        266,
+        432,
+        655
+      ],
+      "pixel_sha256": "e2ca8ab7eeb9f0b452c630789c94136cbc7f351cc721193e36b7944ce8fbae15"
+    },
+    {
+      "frame": 100,
+      "direction": 3,
+      "yaw_degrees": 45.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-03.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        254,
+        265,
+        433,
+        637
+      ],
+      "pixel_sha256": "4687f03b54c502fc3ee49eb77d6af1c4364298e74865a97773fed4c7073f37d5"
+    },
+    {
+      "frame": 101,
+      "direction": 4,
+      "yaw_degrees": 60.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-04.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        227,
+        266,
+        431,
+        612
+      ],
+      "pixel_sha256": "de6c3634a26e8252207f649c53ef972e7c399c7c32aa84f86d69ae0f92457297"
+    },
+    {
+      "frame": 102,
+      "direction": 5,
+      "yaw_degrees": 75.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-05.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        210,
+        269,
+        426,
+        584
+      ],
+      "pixel_sha256": "6cedc5236080c49ab9906d3f1937e7bc92a1a30900f0b8fa1dd2465d7feda4ec"
+    },
+    {
+      "frame": 103,
+      "direction": 6,
+      "yaw_degrees": 90.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-06.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        204,
+        269,
+        423,
+        553
+      ],
+      "pixel_sha256": "491154f947012cad0ba202176bf858effdb470ecb33f137fcb5081b426cd9b2b"
+    },
+    {
+      "frame": 104,
+      "direction": 7,
+      "yaw_degrees": 105.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-07.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        210,
+        269,
+        426,
+        523
+      ],
+      "pixel_sha256": "5b5aed2d87f0c741f6088708ef2794a11b01c75205ca7b648336391356f181d3"
+    },
+    {
+      "frame": 105,
+      "direction": 8,
+      "yaw_degrees": 120.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-08.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        227,
+        266,
+        431,
+        494
+      ],
+      "pixel_sha256": "bbe1dbb75eb03bc059d4944bea7710cfcbc24b819cca57d1c87adeb204c29275"
+    },
+    {
+      "frame": 106,
+      "direction": 9,
+      "yaw_degrees": 135.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-09.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        253,
+        265,
+        433,
+        469
+      ],
+      "pixel_sha256": "676d44f9a570c1a6ea07372abd83c1f2e3ed7b381616e892be11cd7842b8ded4"
+    },
+    {
+      "frame": 107,
+      "direction": 10,
+      "yaw_degrees": 150.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-10.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        288,
+        266,
+        432,
+        450
+      ],
+      "pixel_sha256": "e71aefa819eb7afe2a39870f99457122900193af786910c914d9249621fb21c4"
+    },
+    {
+      "frame": 108,
+      "direction": 11,
+      "yaw_degrees": 165.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-11.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        329,
+        269,
+        428,
+        438
+      ],
+      "pixel_sha256": "0d5470d49b5e74005b18d7fc60cc5339d6608d9bd1286d1d8d123abca7e03310"
+    },
+    {
+      "frame": 109,
+      "direction": 12,
+      "yaw_degrees": 180.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-12.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        423,
+        435
+      ],
+      "pixel_sha256": "1e1b12cf8bb870619074d396426715baf282d39d15f275810280501adf37e829"
+    },
+    {
+      "frame": 110,
+      "direction": 13,
+      "yaw_degrees": 195.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-13.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        438,
+        438
+      ],
+      "pixel_sha256": "675fbe9c66a89e2d4554bd5751a192985206a521d79b5e125627de3297787400"
+    },
+    {
+      "frame": 111,
+      "direction": 14,
+      "yaw_degrees": 210.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-14.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        479,
+        450
+      ],
+      "pixel_sha256": "0e3ce18e79af841e2854bfc0fde130954e943413dc46926dc709cb56d37c9ba8"
+    },
+    {
+      "frame": 112,
+      "direction": 15,
+      "yaw_degrees": 225.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-15.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        514,
+        470
+      ],
+      "pixel_sha256": "2b8e7680e24fc78e7525666676f6515721a004634becc2a2d76820aa990504e2"
+    },
+    {
+      "frame": 113,
+      "direction": 16,
+      "yaw_degrees": 240.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-16.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        540,
+        494
+      ],
+      "pixel_sha256": "c37d945c9e4942763293d97e121e465b54a1fb10aa717124f3ad76daa2a7dc6e"
+    },
+    {
+      "frame": 114,
+      "direction": 17,
+      "yaw_degrees": 255.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-17.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        557,
+        523
+      ],
+      "pixel_sha256": "6ecd09318eb441a9307773b3205f0ce6fc69c57a35a78ac7b2b01eb7842b8829"
+    },
+    {
+      "frame": 115,
+      "direction": 18,
+      "yaw_degrees": 270.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-18.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        344,
+        269,
+        563,
+        553
+      ],
+      "pixel_sha256": "fdc0e6982b68728df3d2e9ac87c7e4d84b15cc8596d00e2400217711f71ebc47"
+    },
+    {
+      "frame": 116,
+      "direction": 19,
+      "yaw_degrees": 285.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-19.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        341,
+        269,
+        557,
+        584
+      ],
+      "pixel_sha256": "e2745021ecedb21806107cf98e64f9765c4501171745166b08b2297b59b686ea"
+    },
+    {
+      "frame": 117,
+      "direction": 20,
+      "yaw_degrees": 300.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-20.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        336,
+        266,
+        540,
+        612
+      ],
+      "pixel_sha256": "78bb14bd59ff901a624c478ab88564bea7e7ffa93ecac3f70a0f089be611bd37"
+    },
+    {
+      "frame": 118,
+      "direction": 21,
+      "yaw_degrees": 315.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-21.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        334,
+        265,
+        514,
+        637
+      ],
+      "pixel_sha256": "d96198b4882fc66d3b8114853811cb924402e8a1bc9a5b93b38ed1695eb11edf"
+    },
+    {
+      "frame": 119,
+      "direction": 22,
+      "yaw_degrees": 330.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-22.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        335,
+        266,
+        479,
+        655
+      ],
+      "pixel_sha256": "7ab4959df8ee1658e236affbeb9e4f277f79674267d878dfac3ff6f6cc005441"
+    },
+    {
+      "frame": 120,
+      "direction": 23,
+      "yaw_degrees": 345.0,
+      "elevation": "high",
+      "elevation_degrees": 60.0,
+      "path": "upper/high/monolith-upper-high-23.png",
+      "layer": "Upper export",
+      "size": [
+        768,
+        768
+      ],
+      "bbox": [
+        339,
+        269,
+        438,
+        666
+      ],
+      "pixel_sha256": "cbc351fe9c127e0444195ce17c56b261952c9343f6862f63a9ca56ec319ff0c5"
+    }
+  ],
+  "origin_pixel_top_left": [
+    384.0,
+    491.27840423583984
+  ],
+  "direction_convention": "0 = model +Y; positive yaw about +Z; 90 degrees = model -X",
+  "frame_formula": "1 + elevation_index * direction_count + direction_index"
+}
